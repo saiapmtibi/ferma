@@ -3,98 +3,137 @@ import json
 import os
 import sqlite3
 import datetime
-from google import genai
+import platform 
 
-# --- CONFIGURĂRI ---
-DB_PATH = "/var/lib/weewx/weewx.sdb"
-API_KEY = "AIzaSyA05SDDWnsDYMSDgBjn5Vh8r4n0G55z4dQ"
-REPO_PATH = "/home/tiberiu/ferma_ai"
+# --- CONFIGURĂRI DINAMICE ---
+if platform.system() == "Windows":
+    DB_PATH = "weewx.sdb"  
+    REPO_PATH = "."        
+    MOD_TEST = False        
+else:
+    DB_PATH = "/var/lib/weewx/weewx.sdb"
+    REPO_PATH = "/home/tiberiu/ferma_ai"
+    MOD_TEST = True       
+
+API_KEY = ""
 
 def extract_last_24h_data():
     if not os.path.exists(DB_PATH):
-        print("Eroare: Nu s-a găsit baza de date WeeWX.")
+        print(f"❌ EROARE: Nu am găsit fișierul {DB_PATH} în folder!")
         return None
     
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
-    yesterday = int((datetime.datetime.now() - datetime.timedelta(hours=24)).timestamp())
-    query = "SELECT dateTime, outTemp, outHumidity, rain FROM archive WHERE dateTime > ? ORDER BY dateTime ASC"
-    cursor.execute(query, (yesterday,))
-    rows = cursor.fetchall()
-    conn.close()
-    return rows
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+        
+        # TEST: Vedem dacă există date în ultimele 24h reale
+        yesterday = int((datetime.datetime.now() - datetime.timedelta(hours=24)).timestamp())
+        query_real = "SELECT dateTime, outTemp, outHumidity, rain FROM archive WHERE dateTime > ? ORDER BY dateTime ASC"
+        cursor.execute(query_real, (yesterday,))
+        rows = cursor.fetchall()
+
+        # DACĂ NU SUNT DATE NOI (cazul tău pe PC), luăm ultimele 288 de rânduri (aprox 24h)
+        if not rows:
+            print("⚠️ Info: Nu sunt date din ultimele 24h. Extrag ultimele înregistrări disponibile...")
+            query_fallback = "SELECT dateTime, outTemp, outHumidity, rain FROM archive ORDER BY dateTime DESC LIMIT 288"
+            cursor.execute(query_fallback)
+            rows = cursor.fetchall()
+            rows.reverse() # Le punem în ordine cronologică
+
+        conn.close()
+        return rows
+    except Exception as e:
+        print(f"❌ EROARE SQLITE: {e}")
+        return None
 
 def analyze_with_ai(data_rows):
-    client = genai.Client(api_key=API_KEY)
-    
-    formatted_data = []
-    for row in data_rows:
-        dt = datetime.datetime.fromtimestamp(row[0]).strftime('%Y-%m-%d %H:%M')
-        formatted_data.append(f"Ora: {dt} | Temp: {row[1]}F | Umiditate: {row[2]}% | Ploaie: {row[3]} in")
-    
-    data_text = "\n".join(formatted_data)
+    if MOD_TEST:
+        print("--- MOD TEST ACTIVAT (Simulare locală) ---")
+        return """### STATUS ACTUAL: RISC MODERAT
+### ANALIZA DATELOR:
+S-au analizat datele extrase din baza de date locală. S-au identificat perioade de umiditate ridicată care pot favoriza apariția Rapănului (Venturia inaequalis).
+### RECOMANDARE:
+Monitorizați livada. Acest raport este generat în MOD TEST pe PC-ul local.
+### BIBLIOGRAFIE:
+* MacHardy, W. E., & Gadoury, D. M. (1989). A Revision of Mill's Criteria for Predicting Apple Scab Infection Periods. *Phytopathology*, 79(3), 304-310. https://doi.org/10.1094/Phyto-79-304"""
 
-    prompt = f"""Ești un asistent fitopatolog expert pentru o fermă didactică de meri din Rusciori, județul Sibiu.
-Sarcina ta: Analizează datele meteo de mai jos (ultimele 24h) și emite un buletin de avertizare scurt, obiectiv și pragmatic.
-
-REGULI STRICTE DE ANALIZĂ:
-1. Datele primite sunt în Fahrenheit și inchi. Convertește-le obligatoriu în Celsius și mm înainte de a face analiza.
-2. Evaluează riscul de Rapăn (Venturia inaequalis) conform Tabelului Mills:
-   - Condiție de bază: frunza este considerată udă dacă Umiditatea > 90%.
-   - Praguri de infecție: 9h umectare continuă la 15°C, 14h la 10°C, 21h la 7°C.
-3. Evaluează riscul de Foc Bacterian (Erwinia amylovora) conform Maryblyt:
-   - Risc crescut dacă temperatura maximă > 18.3°C asociată cu precipitații sau umiditate > 85%.
-4. Răspunde direct, fără introduceri politicoase. Folosește formatare Markdown pentru evidențiere.
-
-STRUCTURA OBLIGATORIE A RĂSPUNSULUI:
-### STATUS ACTUAL: 
-(ex: SĂNĂTOS / RISC MODERAT / INFECȚIE CONFIRMATĂ)
-### ANALIZA DATELOR: 
-(explică scurt ce ai calculat în C și mm)
-### RECOMANDARE: 
-(acțiunea de întreprins în livadă)
-
-DATELE EXTRASE DIN STAȚIE:
-{data_text}"""
-    
-    print("Se trimit datele către Gemini (gemini-2.5-flash)...")
+    # --- LOGICA REALĂ GEMINI ---
     try:
-        response = client.models.generate_content(
-            model='gemini-2.5-flash',
-            contents=prompt
-        )
+        from google import genai
+        client = genai.Client(api_key=API_KEY)
+        
+        formatted_data = []
+        for row in data_rows:
+            dt = datetime.datetime.fromtimestamp(row[0]).strftime('%Y-%m-%d %H:%M')
+            formatted_data.append(f"Ora: {dt} | Temp: {row[1]}F | Umiditate: {row[2]}% | Ploaie: {row[3]} in")
+        
+        data_text = "\n".join(formatted_data)
+        
+# PROMPT DE INTERPRETARE EXPERTĂ
+        prompt = f"""Ești expert fitopatolog. Analizează datele meteo pentru măr (Rusciori, Sibiu):
+{data_text}
+
+LOGICA DE CALCUL (Referință MacHardy & Gadoury, 1989):
+1. Identifică perioada de umectare: intervalul continuu cu Umiditate > 90%.
+2. Calculează temperatura medie pe acea perioadă.
+3. Determină riscul conform pragurilor:
+   - La 7°C: Ușoară (13h), Medie (17h), Severă (23h).
+   - La 8°C: Ușoară (11h), Medie (15h), Severă (20h).
+   - [Folosește interpolarea pentru temperaturi intermediare].
+
+SARCINĂ:
+- Execută calculele matematice pe datele furnizate.
+- Decide nivelul de risc: SĂNĂTOS, RISC MODERAT sau RISC RIDICAT.
+
+STRUCTURA OBLIGATORIE (FĂRĂ REDUNDANȚĂ):
+### STATUS: [Rezultatul tău: SĂNĂTOS / RISC MODERAT / RISC RIDICAT]
+
+### ANALIZA TEHNICĂ:
+- Umectare: [Ora start - Ora final] ([X] ore).
+- Temp. medie: [Y]°C.
+- Justificare: [Explicație scurtă a încadrării în tabelul Mills].
+
+### RECOMANDARE:
+- [Acțiune practică scurtă].
+
+### BIBLIOGRAFIE:
+Pe langa aceasta referinta mia adauga 4 referinte reale ongligatorii neinventate, care pot fi accesate prin doi
+* MacHardy, W. E., & Gadoury, D. M. (1989). https://doi.org/10.1094/Phyto-79-304"""
+
+    
+
+        response = client.models.generate_content(model='gemini-2.5-flash', contents=prompt)
         return response.text
     except Exception as e:
-        print(f"Eroare de comunicare cu API-ul: {e}")
+        print(f"❌ EROARE AI: {e}")
         return None
 
 def trimite_pe_github(text_raport):
-    os.chdir(REPO_PATH)
+    # Determinăm folderul unde se află scriptul
+    folder_actual = os.path.dirname(os.path.abspath(__file__))
+    file_path = os.path.join(folder_actual, "raport.json")
     
     try:
-        with open("raport.json", "w", encoding="utf-8") as f:
+        with open(file_path, "w", encoding="utf-8") as f:
             json.dump({"continut": text_raport}, f, ensure_ascii=False, indent=4)
-        print("Fișier raport.json salvat local.")
+        print(f"✅ SUCCES: Fișierul {file_path} a fost actualizat!")
         
-        subprocess.run(["git", "add", "raport.json"], check=True)
-        subprocess.run(["git", "commit", "-m", f"Actualizare raport meteo {datetime.datetime.now().strftime('%Y-%m-%d %H:%M')}"], check=True)
-        subprocess.run(["git", "push", "origin", "main"], check=True)
-        print("✅ SUCCES: Raportul este LIVE pe GitHub Pages!")
-    except subprocess.CalledProcessError as e:
-        print(f"❌ EROARE GIT: Nu s-a putut face upload-ul. Detalii: {e}")
+        # Push pe GitHub doar dacă suntem pe Linux (Raspberry Pi)
+        if platform.system() != "Windows":
+            os.chdir(REPO_PATH)
+            subprocess.run(["git", "add", "raport.json"], check=True)
+            subprocess.run(["git", "commit", "-m", "Actualizare automata"], check=True)
+            subprocess.run(["git", "push", "origin", "main"], check=True)
+    except Exception as e:
+        print(f"❌ EROARE SALVARE: {e}")
 
-# --- EXECUȚIA PRINCIPALĂ ---
 if __name__ == "__main__":
-    print("Se extrag datele meteo...")
+    print("🚀 Pornire script...")
     records = extract_last_24h_data()
-    
     if records:
-        print(f"S-au extras {len(records)} înregistrări din ultimele 24h.")
+        print(f"📊 Date procesate: {len(records)} linii.")
         raport = analyze_with_ai(records)
-        
         if raport:
             trimite_pe_github(raport)
-        else:
-            print("Eroare: Nu s-a putut genera raportul AI.")
     else:
-        print("Nu există date meteo în ultimele 24h pentru a fi analizate.")
+        print("🛑 Scriptul s-a oprit deoarece nu a găsit date.")

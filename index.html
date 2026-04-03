@@ -3,23 +3,38 @@ cat <<EOF > ~/ferma_ai/index.html
 <html lang="ro">
 <head>
     <meta charset="UTF-8">
-    <title>Sistem Monitorizare Fermă</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Monitorizare Fermă Rusciori</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
-        body { font-family: sans-serif; line-height: 1.6; padding: 20px; background: #f4f4f4; }
-        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        pre { white-space: pre-wrap; word-wrap: break-word; background: #eee; padding: 15px; border-left: 5px solid #2ecc71; font-size: 1.1em; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; padding: 20px; background: #eef2f3; color: #333; }
+        .container { max-width: 900px; margin: auto; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; border-bottom: 2px solid #27ae60; padding-bottom: 10px; text-align: center; }
+        #raport-continut { background: #fff; padding: 20px; border-radius: 8px; font-size: 1.1em; }
+        /* Stiluri pentru Markdown-ul generat */
+        strong { color: #d35400; }
+        h3 { color: #27ae60; margin-top: 25px; }
+        ul { background: #f9f9f9; padding: 15px 40px; border-radius: 5px; }
+        .footer { text-align: center; margin-top: 30px; font-size: 0.8em; color: #7f8c8d; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Buletin Fitosanitar - Livadă Măr</h1>
-        <pre id="raport-continut">Se încarcă cel mai recent raport...</pre>
+        <h1>🍎 Buletin Fitosanitar - Livadă Rusciori</h1>
+        <div id="raport-continut">Se încarcă cel mai recent raport...</div>
+        <div class="footer">Generat automat de Raspberry Pi 4 & Gemini AI</div>
     </div>
+
     <script>
         fetch('raport.json')
             .then(res => res.json())
-            .then(data => { document.getElementById('raport-continut').innerText = data.continut; })
-            .catch(err => { document.getElementById('raport-continut').innerText = "Eroare la încărcare."; });
+            .then(data => {
+                // Conversie Markdown în HTML pur
+                document.getElementById('raport-continut').innerHTML = marked.parse(data.continut);
+            })
+            .catch(err => {
+                document.getElementById('raport-continut').innerHTML = "<b>Eroare:</b> Nu s-a putut încărca raportul. Verifică dacă fișierul raport.json există pe GitHub.";
+            });
     </script>
 </body>
 </html>

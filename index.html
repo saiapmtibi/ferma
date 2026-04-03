@@ -1,4 +1,3 @@
-cat <<EOF > ~/ferma_ai/index.html
 <!DOCTYPE html>
 <html lang="ro">
 <head>
@@ -11,7 +10,6 @@ cat <<EOF > ~/ferma_ai/index.html
         .container { max-width: 900px; margin: auto; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
         h1 { color: #2c3e50; border-bottom: 2px solid #27ae60; padding-bottom: 10px; text-align: center; }
         #raport-continut { background: #fff; padding: 20px; border-radius: 8px; font-size: 1.1em; }
-        /* Stiluri pentru Markdown-ul generat */
         strong { color: #d35400; }
         h3 { color: #27ae60; margin-top: 25px; }
         ul { background: #f9f9f9; padding: 15px 40px; border-radius: 5px; }
@@ -24,18 +22,15 @@ cat <<EOF > ~/ferma_ai/index.html
         <div id="raport-continut">Se încarcă cel mai recent raport...</div>
         <div class="footer">Generat automat de Raspberry Pi 4 & Gemini AI</div>
     </div>
-
     <script>
         fetch('raport.json')
             .then(res => res.json())
             .then(data => {
-                // Conversie Markdown în HTML pur
                 document.getElementById('raport-continut').innerHTML = marked.parse(data.continut);
             })
             .catch(err => {
-                document.getElementById('raport-continut').innerHTML = "<b>Eroare:</b> Nu s-a putut încărca raportul. Verifică dacă fișierul raport.json există pe GitHub.";
+                document.getElementById('raport-continut').innerHTML = "<b>Eroare:</b> Nu s-a putut încărca raportul.";
             });
     </script>
 </body>
 </html>
-EOF

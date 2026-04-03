@@ -1,9 +1,26 @@
+cat <<EOF > ~/ferma_ai/index.html
 <!DOCTYPE html>
-<html>
+<html lang="ro">
 <head>
-    <title>Portofoliu</title>
+    <meta charset="UTF-8">
+    <title>Sistem Monitorizare Fermă</title>
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; padding: 20px; background: #f4f4f4; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        pre { white-space: pre-wrap; word-wrap: break-word; background: #eee; padding: 15px; border-left: 5px solid #2ecc71; font-size: 1.1em; }
+    </style>
 </head>
 <body>
-    <h1>Site-ul funcționează.</h1>
+    <div class="container">
+        <h1>Buletin Fitosanitar - Livadă Măr</h1>
+        <pre id="raport-continut">Se încarcă cel mai recent raport...</pre>
+    </div>
+    <script>
+        fetch('raport.json')
+            .then(res => res.json())
+            .then(data => { document.getElementById('raport-continut').innerText = data.continut; })
+            .catch(err => { document.getElementById('raport-continut').innerText = "Eroare la încărcare."; });
+    </script>
 </body>
 </html>
+EOF

@@ -3,33 +3,163 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Monitorizare Fermă Rusciori</title>
+    <title>Sistem Expert Rusciori</title>
+    
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; padding: 20px; background: #eef2f3; color: #333; }
-        .container { max-width: 900px; margin: auto; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        h1 { color: #2c3e50; border-bottom: 2px solid #27ae60; padding-bottom: 10px; text-align: center; }
-        #raport-continut { background: #fff; padding: 20px; border-radius: 8px; font-size: 1.1em; }
-        strong { color: #d35400; }
-        h3 { color: #27ae60; margin-top: 25px; }
-        ul { background: #f9f9f9; padding: 15px 40px; border-radius: 5px; }
-        .footer { text-align: center; margin-top: 30px; font-size: 0.8em; color: #7f8c8d; }
+        :root {
+            --primary: #2ecc71;
+            --secondary: #27ae60;
+            --accent: #e67e22;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --danger: #e74c3c;
+            --warning: #f1c40f;
+            --gradient: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0; padding: 0;
+            background: #f8fafc;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .top-banner {
+            background: var(--gradient);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: -30px auto 50px auto;
+            padding: 0 20px;
+        }
+
+        #status-bar {
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 700;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            color: white;
+            background: #95a5a6;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .status-safe { background: #2ecc71 !important; }
+        .status-warn { background: #f1c40f !important; color: #2c3e50 !important; } /* GALBEN */
+        .status-alert { background: #e74c3c !important; }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.01); }
+            100% { transform: scale(1); }
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        #raport-continut h3 {
+            color: var(--secondary);
+            border-left: 4px solid var(--secondary);
+            padding-left: 15px;
+            margin-top: 35px;
+            font-size: 1.3em;
+        }
+
+        #raport-continut h3:first-child { margin-top: 0; }
+
+        #raport-continut ul {
+            background: #f7fafc;
+            padding: 20px 40px;
+            border-radius: 8px;
+            list-style-type: square;
+        }
+
+        #raport-continut h3:last-of-type + ul {
+            font-family: 'Georgia', serif;
+            font-size: 0.95em;
+            background: #fffdf9;
+            border: 1px solid #e2e8f0;
+            color: #2d3748;
+            line-height: 1.8;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 40px;
+            color: #a0aec0;
+            font-size: 0.85em;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🍎 Buletin Fitosanitar - Livadă Rusciori</h1>
-        <div id="raport-continut">Se încarcă cel mai recent raport...</div>
-        <div class="footer">Generat automat de Raspberry Pi 4 & Gemini AI <br> <strong>Powered by Tiberiu Drăghici</strong></div>
+
+    <div class="top-banner">
+        <h1>Ferma didactică și de cercetare a Facultății de Științe Agricole, Industrie alimentară și Protecția Mediului</h1>
+        <p>Sistem de prognoză și avertizare fitosanitare bazat pe Inteligență Artificială</p>
     </div>
+
+    <div class="container">
+        <div id="status-bar">Se încarcă datele din sistem...</div>
+
+        <div class="card">
+            <div id="raport-continut">
+                Conexiune stabilită. Se prelucrează raportul final...
+            </div>
+        </div>
+
+        <div class="footer">
+            <b>© 2026 Tiberiu Drăghici</b> | Academic Framework v3.1
+        </div>
+    </div>
+
     <script>
-        fetch('raport.json')
+function setStatus(text) {
+    const bar = document.getElementById('status-bar');
+    // Luăm doar prima parte a textului (unde e statusul) pentru a nu citi bibliografia
+    const headerArea = text.split('### ANALIZA')[0].toUpperCase();
+    
+    bar.className = ""; 
+
+    if (headerArea.includes("RISC RIDICAT") || headerArea.includes("SEVERĂ")) {
+        bar.innerText = "⚠️ ALERTĂ: RISC RIDICAT";
+        bar.className = "status-alert";
+    } 
+    else if (headerArea.includes("RISC MODERAT") || headerArea.includes("MEDIE")) {
+        bar.innerText = "🚧 ATENȚIE: RISC MODERAT";
+        bar.className = "status-warn";
+    } 
+    else if (headerArea.includes("SĂNĂTOS") || headerArea.includes("RISC SCĂZUT")) {
+        bar.innerText = "✅ STATUS: CONDIȚII SIGURE";
+        bar.className = "status-safe";
+    }
+    else {
+        bar.innerText = "DETECȚIE ACTIVĂ";
+        bar.className = "status-warn";
+    }
+}
+        fetch('raport.json?cache=' + new Date().getTime())
             .then(res => res.json())
             .then(data => {
                 document.getElementById('raport-continut').innerHTML = marked.parse(data.continut);
+                setStatus(data.continut);
             })
             .catch(err => {
-                document.getElementById('raport-continut').innerHTML = "<b>Eroare:</b> Nu s-a putut încărca raportul.";
+                document.getElementById('raport-continut').innerHTML = "<p style='color:red'>Eroare la preluarea datelor.</p>";
             });
     </script>
 </body>

@@ -434,22 +434,38 @@
             100% { top: 100vh; opacity: 0; }
         }
 
-        /* ── RESPONSIVE ── */
+    /* ── RESPONSIVE RAPORT ── */
         @media (max-width: 680px) {
-    /* ... restul stilurilor existente ... */
-    .header-official-logo { 
-        height: 40px; /* Reducem înălțimea de la 55px */
-        width: auto; 
-    }
-    .header-farm-title { 
-        font-size: 0.85rem; /* Reducem textul să nu împingă marginile */
-        max-width: 200px; 
-    }
-    .header-inner {
-        flex-direction: column; /* Stivuim elementele pentru a economisi spațiu orizontal */
-        gap: 10px;
-    }
-}
+            header { padding: 0 20px; }
+            .header-inner { flex-direction: column; gap: 10px; }
+            .header-official-logo { height: 40px; }
+            .header-farm-title { font-size: 0.85rem; max-width: 250px; }
+            
+            main { padding: 20px 10px 60px; } /* Mai puțin padding lateral pentru main */
+            .report-body { padding: 20px 12px; } /* Aerisim interiorul cardului */
+            
+            /* Aerisim listele de recomandări */
+            #raport-continut ul li {
+                padding: 18px 14px 18px 38px; /* Mai mult spațiu sus-jos între rânduri */
+                font-size: 0.85rem;
+                line-height: 1.6;
+            }
+            #raport-continut ul li::before { left: 12px; top: 18px; }
+
+            /* Tabelele devin scrollabile lateral să nu se strivească textul */
+            #raport-continut table {
+                display: block;
+                width: 100%;
+                overflow-x: auto;
+                white-space: nowrap; /* Împiedică forțarea textului pe rânduri noi în celule */
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            .meta-card.banner-text { padding: 15px; font-size: 0.85rem; }
+            
+            footer { flex-direction: column; gap: 20px; text-align: center; padding: 30px 20px; }
+            footer .f-right { text-align: center; }
+        }
         /* Stilizare specifică pentru titlul ANALIZA (al doilea H3 din raport) */
             #raport-continut h3:nth-of-type(2),
             #raport-continut h3:nth-of-type(3),
@@ -466,6 +482,7 @@
         #raport-continut h3:nth-of-type(4)::before {
             display: none;
         }
+        
         /* ── DISCLAIMER CARD ── */
         .disclaimer-card {
             background: rgba(255, 214, 0, 0.05); /* Fundal cu o tentă foarte fină de galben */

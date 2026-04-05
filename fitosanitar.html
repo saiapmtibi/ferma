@@ -505,6 +505,35 @@
         #raport-continut tr:nth-child(even) {
             background: rgba(79, 195, 247, 0.03);
         }
+        /* ── BUTON ÎNAPOI ── */
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 40px; /* Spațiu deasupra butonului */
+        }
+
+        .btn-back {
+            display: inline-block;
+            padding: 12px 28px;
+            background: rgba(0, 229, 204, 0.1);
+            color: var(--accent-cyan);
+            border: 1px solid var(--accent-cyan);
+            border-radius: 8px;
+            text-decoration: none;
+            font-family: var(--mono);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 20;
+        }
+
+        .btn-back:hover {
+            background: var(--accent-cyan);
+            color: var(--bg-deep);
+            box-shadow: 0 0 15px rgba(0, 229, 204, 0.4);
+        }
     </style>
 </head>
 <body>
@@ -516,7 +545,7 @@
     <div class="header-inner">
         <div class="header-logo-container">
             <img src="logo-oficial.png" alt="Logo Oficial ULBS Sibiu" class="header-official-logo">
-            <h1 class="header-farm-title">Ferma didactică și de Cercetare</h1>
+            <h1 class="header-farm-title">Ferma Didactică și de Cercetare Rusciori</h1>
         </div>
 
         <div class="live-badge">
@@ -546,7 +575,7 @@
         </div>
     </div>
 
-    <!-- REPORT CARD -->
+    <!-- REPORT CARD Disclaimer -->
     <div class="report-card">
         <div class="report-card-header">
             <h2>RAPORT</h2>
@@ -569,6 +598,10 @@
         <p><strong>Notă de informare:</strong> Tratați acest raport strict ca pe un mijloc de informare și luați în considerare că poate conține informații eronate din cauza 
             fenomenului de halucinație al instrumentelor de Inteligență Artificială. Acest raport automatizat nu înlocuiește sub nicio formă decizia și expertiza unui
             specialist agronom.</p>
+    </div>
+    <!-- Buton inaoiu dashboard -->
+    <div class="btn-container">
+        <a href="index.html" class="btn-back">← Înapoi la Dashboard</a>
     </div>
 
 </main>

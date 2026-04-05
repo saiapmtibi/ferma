@@ -100,11 +100,58 @@
         .module-title { font-size: 1.3rem; font-weight: 600; color: var(--accent-cyan); margin-bottom: 10px; }
         .module-desc { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; }
 
-        @media (max-width: 768px) {
-            .module-grid { grid-template-columns: 1fr; }
-            header { padding: 0 20px; }
-            main { padding: 40px 20px; }
+        /* ── RESPONSIVE ── */
+        @media (max-width: 680px) {
+           /* ... restul stilurilor existente ... */
+        .header-official-logo { 
+            height: 40px; /* Reducem înălțimea de la 55px */
+            width: auto; 
+            }
+        .header-farm-title { 
+            font-size: 0.85rem; /* Reducem textul să nu împingă marginile */
+            max-width: 200px; 
+            }
+        .header-inner {
+            flex-direction: column; /* Stivuim elementele pentru a economisi spațiu orizontal */
+            gap: 10px;
+            }
         }
+      /* ── FOOTER STYLES ── */
+        footer {
+            position: relative;
+            z-index: 10;
+            max-width: 1100px;
+            margin: 40px auto 0; /* Adăugăm spațiu deasupra */
+            padding: 40px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        footer .f-left {
+            font-family: var(--mono);
+            font-size: 0.68rem;
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+
+        footer .f-right {
+            font-family: var(--mono);
+            font-size: 0.68rem;
+            color: var(--text-muted);
+            text-align: right;
+        }
+
+        @media (max-width: 680px) {
+            footer { 
+                flex-direction: column; 
+                gap: 20px; 
+                text-align: center; 
+                padding: 30px 20px;
+            }
+            footer .f-right { text-align: center; }
+        }  
     </style>
 </head>
 <body>
@@ -135,6 +182,18 @@
         </a>
     </div>
 </main>
+     
+<footer>
+    <div class="f-left">
+        © 2026 Asist. Univ. Dr. Ing. <strong style="color:var(--text-secondary)">Tiberiu Drăghici</strong><br>
+        Facultatea de Științe Agricole, Industrie Alimentară și Protecția Mediului<br>
+        Universitatea „Lucian Blaga" din Sibiu
+    </div>
+    <div class="f-right">
+        Academic Framework v3.1<br>
+        <span style="color: var(--accent-cyan); opacity:0.6;">AI-Powered Phytosanitary Intelligence</span>
+    </div>
+</footer>
 
 </body>
 </html>

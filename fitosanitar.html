@@ -436,15 +436,20 @@
 
         /* ── RESPONSIVE ── */
         @media (max-width: 680px) {
-            header { padding: 0 20px; }
-            main   { padding: 24px 20px 60px; }
-            footer { padding: 0 20px 40px; flex-direction: column; gap: 12px; text-align: center; }
-            .header-inner { grid-template-columns: auto 1fr; }
-            .live-badge { display: none; }
-            .meta-row { grid-template-columns: 1fr; }
-            #status-text { font-size: 1.6rem; }
-            .report-body { padding: 20px; }
-        }
+    /* ... restul stilurilor existente ... */
+    .header-official-logo { 
+        height: 40px; /* Reducem înălțimea de la 55px */
+        width: auto; 
+    }
+    .header-farm-title { 
+        font-size: 0.85rem; /* Reducem textul să nu împingă marginile */
+        max-width: 200px; 
+    }
+    .header-inner {
+        flex-direction: column; /* Stivuim elementele pentru a economisi spațiu orizontal */
+        gap: 10px;
+    }
+}
         /* Stilizare specifică pentru titlul ANALIZA (al doilea H3 din raport) */
             #raport-continut h3:nth-of-type(2),
             #raport-continut h3:nth-of-type(3),

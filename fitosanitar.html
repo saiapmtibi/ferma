@@ -482,14 +482,7 @@
         #raport-continut h3:nth-of-type(4)::before {
             display: none;
         }
-        /* ── RESURSE CARD ── */    
-        <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; background-color: #f9f9f9;">
-    <h3 style="text-align: left; margin-top: 0;">Resurse</h3>
-    <ul>
-        <li><a href="https://www.apsnet.org/publications/phytopathology/backissues/Documents/1989Articles/Phyto79n03_304.pdf" target="_blank" rel="noopener noreferrer">MacHardy, W. E., & Gadoury, D. M. (1989) - Phytopathology</a></li>
-        <li><a href="https://reader.library.cornell.edu/docviewer/digital?id=chla7031969_8487_001#page/3/mode/1up" target="_blank" rel="noopener noreferrer">Mills, W. D. (1944) - Cornell Extension Bulletin</a></li>
-    </ul>
-</div>
+     
         /* ── DISCLAIMER CARD ── */
         .disclaimer-card {
             background: rgba(255, 214, 0, 0.05); /* Fundal cu o tentă foarte fină de galben */
@@ -622,6 +615,16 @@
             </div>
         </div>
     </div>
+    
+    <!-- Resurse card -->
+        <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; background-color: #f9f9f9;">
+    <h3 style="text-align: left; margin-top: 0;">Resurse</h3>
+    <ul>
+        <li><a href="https://www.apsnet.org/publications/phytopathology/backissues/Documents/1989Articles/Phyto79n03_304.pdf" target="_blank" rel="noopener noreferrer">MacHardy, W. E., & Gadoury, D. M. (1989) - Phytopathology</a></li>
+        <li><a href="https://reader.library.cornell.edu/docviewer/digital?id=chla7031969_8487_001#page/3/mode/1up" target="_blank" rel="noopener noreferrer">Mills, W. D. (1944) - Cornell Extension Bulletin</a></li>
+    </ul>
+</div>
+      <!-- Dsiclaimer halucinatie card -->
     <div class="disclaimer-card">
         <div class="disclaimer-icon">⚠️</div>
         <p><strong>Notă de informare:</strong> Tratați acest raport strict ca pe un mijloc de informare și luați în considerare că poate conține informații eronate din cauza 
@@ -707,7 +710,6 @@
             document.getElementById('raport-continut').innerHTML = marked.parse(data.continut);
             setStatus(data.continut);
 
-            // ... (păstrează restul codului de aici în jos)
 
             /* Staggered fade-in for list items */
             document.querySelectorAll('#raport-continut li').forEach((li, i) => {

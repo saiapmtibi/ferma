@@ -106,6 +106,18 @@
             transform: translateY(-5px);
             box-shadow: 0 10px 30px rgba(0, 229, 204, 0.1);
         }
+        .card-centrat {
+            grid-column: 1 / -1; 
+            justify-self: center; 
+            width: calc(50% - 12px);
+        }
+        
+        @media (max-width: 680px) {
+            .card-centrat {
+                width: 100%;
+                grid-column: auto;
+            }
+        }
 
         .module-icon { font-size: 3rem; margin-bottom: 20px; }
         .module-title { font-size: 1.3rem; font-weight: 600; color: var(--accent-cyan); margin-bottom: 10px; }
@@ -196,7 +208,7 @@
 <main>
     <h2 class="page-title">Platformă de Predicție Multi-Risc pentru specia <em>Malus domestica</em> bazat pe Inteligență Artificială</h2>
     <p class="project-description">
-        <strong>Platforma de Predicție Multi-Risc pentru specia <em>Malus domestica</em> bazat pe Inteligență Artificială</strong> este un stistem încadrat în agricultură de precizie care transformă datele de microclimati, brute, în decizii agronomice proactive. Prin intermediul unui motor de inteligență artificială generativă, platforma procesează 
+        <strong>Platforma de Predicție Multi-Risc pentru specia <em>Malus domestica</em> bazată pe Inteligență Artificială</strong> este un stistem încadrat în agricultură de precizie care transformă datele de microclimati, brute, în decizii agronomice proactive. Prin intermediul unui motor de inteligență artificială generativă, platforma procesează 
         simbolic datele de telemetrie în timp real și le corelează cu modele matematice validate științific. Motorul de inteligență artificială generativă anticipează astfel presiunea de infecție a patogenilor specifici, dinamica populațiilor de dăunători și impactul stresului 
         abiotic asupra culturii. Sistemul permite optimizarea ferestrelor de intervenție, managementului integrat și sustenabil al livezii, reducând amprenta chimică asupra mediului.
     </p>

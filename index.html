@@ -81,15 +81,17 @@
             padding: 40px 30px;
             text-align: center;
             text-decoration: none;
+            color: inherit;
             transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             cursor: pointer;
+            position: relative;
         }
 
-        .module-card:hover {
+        a.module-card:hover {
             border-color: var(--accent-cyan);
             background: var(--bg-card2);
             transform: translateY(-5px);
@@ -100,28 +102,66 @@
         .module-title { font-size: 1.3rem; font-weight: 600; color: var(--accent-cyan); margin-bottom: 10px; }
         .module-desc { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; }
 
+        /* ─── BUTOANE PATOGENI INTERNE ─── */
+        .pathogen-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 25px;
+            width: 100%;
+        }
+
+        .pathogen-btn {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(8, 13, 20, 0.6);
+            border: 1px solid var(--border);
+            padding: 12px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+
+        .pathogen-btn:hover {
+            border-color: var(--accent-cyan);
+            background: var(--bg-card2);
+            transform: translateX(5px);
+        }
+
+        .status-badge {
+            font-family: var(--mono);
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-weight: bold;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
         /* ── RESPONSIVE ── */
         @media (max-width: 680px) {
-           /* ... restul stilurilor existente ... */
-        .header-official-logo { 
-            height: 40px; /* Reducem înălțimea de la 55px */
-            width: auto; 
-            }
-        .header-farm-title { 
-            font-size: 0.85rem; /* Reducem textul să nu împingă marginile */
-            max-width: 200px; 
-            }
-        .header-inner {
-            flex-direction: column; /* Stivuim elementele pentru a economisi spațiu orizontal */
-            gap: 10px;
-            }
+            .header-official-logo { height: 40px; }
+            .header-farm-title { font-size: 0.85rem; max-width: 250px; }
+            .header-inner { flex-direction: column; gap: 10px; }
+            header { padding: 0 20px; }
+            main { padding: 40px 20px; }
+            .page-title { font-size: 1.4rem; margin-bottom: 30px; }
+            .module-grid { grid-template-columns: 1fr; gap: 16px; }
+            .module-card { padding: 30px 20px; }
+            footer { flex-direction: column; gap: 20px; text-align: center; padding: 30px 20px; }
+            footer .f-right { text-align: center; }
         }
-      /* ── FOOTER STYLES ── */
+
+        /* ── FOOTER STYLES ── */
         footer {
             position: relative;
             z-index: 10;
             max-width: 1100px;
-            margin: 40px auto 0; /* Adăugăm spațiu deasupra */
+            margin: 40px auto 0;
             padding: 40px;
             border-top: 1px solid var(--border);
             display: flex;
@@ -129,38 +169,8 @@
             justify-content: space-between;
         }
 
-        footer .f-left {
-            font-family: var(--mono);
-            font-size: 0.68rem;
-            color: var(--text-muted);
-            line-height: 1.8;
-        }
-
-        footer .f-right {
-            font-family: var(--mono);
-            font-size: 0.68rem;
-            color: var(--text-muted);
-            text-align: right;
-        }
-
-        @media (max-width: 680px) {
-                header { padding: 0 20px; }
-                .header-inner { flex-direction: column; gap: 10px; }
-                .header-official-logo { height: 40px; } /* Fix Logo mic */
-                .header-farm-title { font-size: 0.85rem; max-width: 250px; }
-            
-            main { padding: 40px 20px; }
-            .page-title { font-size: 1.4rem; margin-bottom: 30px; }
-            
-            .module-grid { 
-                grid-template-columns: 1fr; /* O singură coloană pe mobil */
-                gap: 16px; 
-            }
-            .module-card { padding: 30px 20px; }
-            
-            footer { flex-direction: column; gap: 20px; text-align: center; padding: 30px 20px; }
-            footer .f-right { text-align: center; }
-        }
+        footer .f-left { font-family: var(--mono); font-size: 0.68rem; color: var(--text-muted); line-height: 1.8; }
+        footer .f-right { font-family: var(--mono); font-size: 0.68rem; color: var(--text-muted); text-align: right; }
     </style>
 </head>
 <body>
@@ -178,11 +188,28 @@
     <h2 class="page-title">Sistem Expert AI de analiză a fermei Didactice și de Cercetare Rusciori</h2>
     
     <div class="module-grid">
-        <a href="fitosanitar.html" class="module-card">
+        <div class="module-card" style="cursor: default;">
             <div class="module-icon">🍏</div>
-            <div class="module-title">Raport Fitosanitar</div>
-            <div class="module-desc">Analiză de risc (Modelul Mills) pentru infecția cu Venturia inaequalis.</div>
-        </a>
+            <div class="module-title">Monitorizare Fitosanitară</div>
+            <div class="module-desc">Sinteza patogenilor pe baza modelărilor meteo.</div>
+            
+            <div class="pathogen-list">
+                <a href="fitosanitar/rapan.html" class="pathogen-btn">
+                    <span>Venturia inaequalis</span>
+                    <span class="status-badge" id="status-rapan">Se încarcă...</span>
+                </a>
+                
+                <a href="fitosanitar/fainare.html" class="pathogen-btn">
+                    <span>Podosphaera leucotricha</span>
+                    <span class="status-badge" id="status-fainare">Se încarcă...</span>
+                </a>
+
+                <a href="/fitosanitarmonilioza.html" class="pathogen-btn">
+                    <span>Monilinia fructigena</span>
+                    <span class="status-badge" id="status-monilioza">Se încarcă...</span>
+                </a>
+            </div>
+        </div>
 
         <a href="stres.html" class="module-card">
             <div class="module-icon">🌡️</div>
@@ -203,6 +230,49 @@
         <span style="color: var(--accent-cyan); opacity:0.6;">AI-Powered Phytosanitary Intelligence</span>
     </div>
 </footer>
+
+<script>
+    // Fetch pentru a citi raport.json și a colora etichetele de status
+    fetch('raport.json')
+        .then(response => response.json())
+        .then(data => {
+            const updateStatus = (elementId, statusText) => {
+                const badge = document.getElementById(elementId);
+                if (!badge || !statusText) return;
+                
+                badge.textContent = statusText;
+                let text = statusText.toLowerCase();
+                
+                // Colorare semantică
+                if (text.includes('ridicat') || text.includes('alertă')) {
+                    badge.style.color = '#ff5252'; 
+                    badge.style.backgroundColor = 'rgba(255, 82, 82, 0.15)';
+                    badge.style.borderColor = 'rgba(255, 82, 82, 0.3)';
+                } else if (text.includes('moderat')) {
+                    badge.style.color = '#fb8c00'; 
+                    badge.style.backgroundColor = 'rgba(251, 140, 0, 0.15)';
+                    badge.style.borderColor = 'rgba(251, 140, 0, 0.3)';
+                } else {
+                    badge.style.color = 'var(--status-safe)'; 
+                    badge.style.backgroundColor = 'rgba(0, 230, 118, 0.15)';
+                    badge.style.borderColor = 'rgba(0, 230, 118, 0.3)';
+                }
+            };
+
+            // Apelăm funcția pentru cele 3 chei din JSON
+            if (data.rapan) updateStatus('status-rapan', data.rapan.status);
+            if (data.fainare) updateStatus('status-fainare', data.fainare.status);
+            if (data.monilioza) updateStatus('status-monilioza', data.monilioza.status);
+        })
+        .catch(err => {
+            console.error('Eroare încărcare raport.json:', err);
+            const badges = document.querySelectorAll('.status-badge');
+            badges.forEach(b => {
+                b.textContent = 'DATE INDISPONIBILE';
+                b.style.color = 'var(--text-muted)';
+            });
+        });
+</script>
 
 </body>
 </html>

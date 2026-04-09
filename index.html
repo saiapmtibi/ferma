@@ -306,10 +306,18 @@
 </footer>
 
 <script>
-    // Fetch pentru a citi raport.json și a colora etichetele de status
+// Fetch pentru a citi raport.json și a colora etichetele de status
     fetch('raport.json')
         .then(response => response.json())
         .then(data => {
+            
+            // --- 1. MODUL FENOLOGIE ȘI BIOCLIMAT ---
+            if (data.abiotic_si_feno) {
+                document.getElementById('status-fenofaza').textContent = data.abiotic_si_feno.fenofaza;
+                document.getElementById('status-gdd').textContent = data.abiotic_si_feno.gdd;
+            }
+
+            // Funcția de colorare semantică
             const updateStatus = (elementId, statusText) => {
                 const badge = document.getElementById(elementId);
                 if (!badge || !statusText) return;
@@ -317,8 +325,8 @@
                 badge.textContent = statusText;
                 let text = statusText.toLowerCase();
                 
-                // Colorare semantică
-                if (text.includes('ridicat') || text.includes('alertă')) {
+                // Colorare semantică (actualizată pentru noile alerte abiotice)
+                if (text.includes('ridicat') || text.includes('alertă') || (text.includes('risc') && !text.includes('moderat'))) {
                     badge.style.color = '#ff5252'; 
                     badge.style.backgroundColor = 'rgba(255, 82, 82, 0.15)';
                     badge.style.borderColor = 'rgba(255, 82, 82, 0.3)';
@@ -333,18 +341,32 @@
                 }
             };
 
-            // Apelăm funcția pentru cele 3 chei din JSON
+            // --- 2. MODUL FITOSANITAR ---
             if (data.rapan) updateStatus('status-rapan', data.rapan.status);
             if (data.fainare) updateStatus('status-fainare', data.fainare.status);
             if (data.monilioza) updateStatus('status-monilioza', data.monilioza.status);
+
+            // --- 3. MODUL STRES ABIOTIC ---
+            if (data.stres_termic) updateStatus('status-termic', data.stres_termic.status);
+            if (data.stres_hidric) updateStatus('status-hidric', data.stres_hidric.status);
+            if (data.stres_radiativ) updateStatus('status-radiativ', data.stres_radiativ.status);
+            if (data.stres_eolian) updateStatus('status-eolian', data.stres_eolian.status);
         })
         .catch(err => {
             console.error('Eroare încărcare raport.json:', err);
+            
+            // Fallback în caz de eroare pentru badge-uri
             const badges = document.querySelectorAll('.status-badge');
             badges.forEach(b => {
                 b.textContent = 'DATE INDISPONIBILE';
                 b.style.color = 'var(--text-muted)';
             });
+            
+            // Fallback pentru modulul fenologic
+            const fenoEl = document.getElementById('status-fenofaza');
+            const gddEl = document.getElementById('status-gdd');
+            if(fenoEl) fenoEl.textContent = "Eroare citire date";
+            if(gddEl) gddEl.textContent = "--";
         });
 </script>
 

@@ -111,6 +111,11 @@
             justify-self: center; 
             width: calc(50% - 12px);
         }
+
+        .card-full-width {
+            grid-column: 1 / -1;
+            width: 100%;
+        }
         
         @media (max-width: 680px) {
             .card-centrat {
@@ -214,6 +219,23 @@
     </p>
     
     <div class="module-grid">
+        <div class="module-card card-full-width" style="cursor: default; border-color: var(--accent-blue); background: var(--bg-card2);">
+            <div class="module-icon" style="font-size: 2.5rem; margin-bottom: 10px;">🌱</div>
+            <div class="module-title" style="color: var(--text-primary);">Status Fenologic</div>
+            <div class="module-desc">Calcul determinist bazat pe acumularea termică a speciei <em>Malus domestica</em>.</div>
+            
+            <div style="display: flex; justify-content: space-around; width: 100%; margin-top: 25px; border-top: 1px solid var(--border); padding-top: 20px;">
+                <div style="text-align: center;">
+                    <span style="display: block; font-family: var(--mono); font-size: 0.75rem; color: var(--text-muted); letter-spacing: 1px;">FENOFAZA ESTIMATĂ</span>
+                    <strong style="color: var(--accent-cyan); font-size: 1.2rem;" id="status-fenofaza">Se calculează...</strong>
+                </div>
+                <div style="text-align: center;">
+                    <span style="display: block; font-family: var(--mono); font-size: 0.75rem; color: var(--text-muted); letter-spacing: 1px;">GDD ACUMULAT (Sezon)</span>
+                    <strong style="color: var(--text-primary); font-size: 1.2rem;" id="status-gdd">--</strong> 
+                    <span style="font-size: 0.8rem; color: var(--text-secondary);"> (baza 4.5°C, din 1 feb)</span>
+                </div>
+            </div>
+        </div>
         <div class="module-card" style="cursor: default;">
             <div class="module-icon">🍏</div>
             <div class="module-title">Monitorizare Fitosanitară</div>
@@ -241,11 +263,33 @@
             <div class="module-title">Monitorizare Entomologică</div>
             <div class="module-desc">Analiza dinamicii populaționale și a riscului de atac pentru dăunătorii specifici speciei <em>Malus domestica</em>.</div>
         </a>
-        <a href="stres.html" class="module-card card-centrat">
+       <div class="module-card card-centrat" style="cursor: default;">
             <div class="module-icon">🌡️</div>
             <div class="module-title">Stres Abiotic</div>
-            <div class="module-desc">Analiza precipitațiilor, temperaturii și impactului asupra plantației pomicole de măr.</div>
-        </a>
+            <div class="module-desc">Analiza factorilor extremi: temperatură, deficit de apă, radiație și vânt.</div>
+            
+            <div class="pathogen-list">
+                <a href="abiotic/termic.html" class="pathogen-btn">
+                    <span>Stres Termic</span>
+                    <span class="status-badge" id="status-termic">Se încarcă...</span>
+                </a>
+                
+                <a href="abiotic/hidric.html" class="pathogen-btn">
+                    <span>Stres Hidric</span>
+                    <span class="status-badge" id="status-hidric">Se încarcă...</span>
+                </a>
+
+                <a href="abiotic/radiativ.html" class="pathogen-btn">
+                    <span>Stres Radiativ</span>
+                    <span class="status-badge" id="status-radiativ">Se încarcă...</span>
+                </a>
+
+                <a href="abiotic/eolian.html" class="pathogen-btn">
+                    <span>Stres Eolian</span>
+                    <span class="status-badge" id="status-eolian">Se încarcă...</span>
+                </a>
+            </div>
+        </div>
     </div>
 </main>
      
@@ -262,10 +306,18 @@
 </footer>
 
 <script>
-    // Fetch pentru a citi raport.json și a colora etichetele de status
+// Fetch pentru a citi raport.json și a colora etichetele de status
     fetch('raport.json')
         .then(response => response.json())
         .then(data => {
+            
+            // --- 1. MODUL FENOLOGIE ȘI BIOCLIMAT ---
+            if (data.abiotic_si_feno) {
+                document.getElementById('status-fenofaza').textContent = data.abiotic_si_feno.fenofaza;
+                document.getElementById('status-gdd').textContent = data.abiotic_si_feno.gdd;
+            }
+
+            // Funcția de colorare semantică
             const updateStatus = (elementId, statusText) => {
                 const badge = document.getElementById(elementId);
                 if (!badge || !statusText) return;
@@ -273,8 +325,8 @@
                 badge.textContent = statusText;
                 let text = statusText.toLowerCase();
                 
-                // Colorare semantică
-                if (text.includes('ridicat') || text.includes('alertă')) {
+                // Colorare semantică (actualizată pentru noile alerte abiotice)
+                if (text.includes('ridicat') || text.includes('alertă') || (text.includes('risc') && !text.includes('moderat'))) {
                     badge.style.color = '#ff5252'; 
                     badge.style.backgroundColor = 'rgba(255, 82, 82, 0.15)';
                     badge.style.borderColor = 'rgba(255, 82, 82, 0.3)';
@@ -289,18 +341,32 @@
                 }
             };
 
-            // Apelăm funcția pentru cele 3 chei din JSON
+            // --- 2. MODUL FITOSANITAR ---
             if (data.rapan) updateStatus('status-rapan', data.rapan.status);
             if (data.fainare) updateStatus('status-fainare', data.fainare.status);
             if (data.monilioza) updateStatus('status-monilioza', data.monilioza.status);
+
+            // --- 3. MODUL STRES ABIOTIC ---
+            if (data.stres_termic) updateStatus('status-termic', data.stres_termic.status);
+            if (data.stres_hidric) updateStatus('status-hidric', data.stres_hidric.status);
+            if (data.stres_radiativ) updateStatus('status-radiativ', data.stres_radiativ.status);
+            if (data.stres_eolian) updateStatus('status-eolian', data.stres_eolian.status);
         })
         .catch(err => {
             console.error('Eroare încărcare raport.json:', err);
+            
+            // Fallback în caz de eroare pentru badge-uri
             const badges = document.querySelectorAll('.status-badge');
             badges.forEach(b => {
                 b.textContent = 'DATE INDISPONIBILE';
                 b.style.color = 'var(--text-muted)';
             });
+            
+            // Fallback pentru modulul fenologic
+            const fenoEl = document.getElementById('status-fenofaza');
+            const gddEl = document.getElementById('status-gdd');
+            if(fenoEl) fenoEl.textContent = "Eroare citire date";
+            if(gddEl) gddEl.textContent = "--";
         });
 </script>
 

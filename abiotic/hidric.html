@@ -394,28 +394,6 @@
             0%   { background-position: 200% 0; }
             100% { background-position: -200% 0; }
         }
-
-        /* ── SCAN LINE (decorative) ── */
-        .scan-line {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
-            opacity: 0;
-            animation: scan 8s ease-in-out infinite;
-            z-index: 999;
-            pointer-events: none;
-        }
-
-        @keyframes scan {
-            0%   { top: 0; opacity: 0; }
-            5%   { opacity: 0.5; }
-            95%  { opacity: 0.5; }
-            100% { top: 100vh; opacity: 0; }
-        }
-
     /* ── RESPONSIVE RAPORT ── */
         @media (max-width: 680px) {
             header { padding: 0 20px; }
@@ -559,8 +537,6 @@
 </head>
 <body>
 
-<div class="scan-line"></div>
-
 <header>
     <div class="header-inner">
         <div class="header-logo-container">
@@ -660,15 +636,15 @@
 
         if (upperStatus.includes('RIDICAT') || upperStatus.includes('ALERTĂ') || (upperStatus.includes('RISC') && !upperStatus.includes('MODERAT'))) {
             panel.classList.add('st-alert');
-            statusElement.textContent = 'Alertă · Condiții Extreme';
+            statusElement.textContent = 'Condiții Extreme';
             statusIcon.textContent = '🔴';
         } else if (upperStatus.includes('MODERAT')) {
             panel.classList.add('st-warn');
-            statusElement.textContent = 'Risc Moderat · Atenție';
+            statusElement.textContent = 'Risc Moderat';
             statusIcon.textContent = '🟡';
-        } else if (upperStatus.includes('SĂNĂTOS') || upperStatus.includes('OPTIM')) {
+        } else if (upperStatus.includes('SĂNĂTOS') || upperStatus.includes('INEXISTENT')) {
             panel.classList.add('st-safe');
-            statusElement.textContent = 'Condiții Optime · Sigur';
+            statusElement.textContent = 'Condiții Optime';
             statusIcon.textContent = '🟢';
         } else {
             panel.classList.add('st-warn');

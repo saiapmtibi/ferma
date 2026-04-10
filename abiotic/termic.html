@@ -287,7 +287,24 @@
             align-items: center;
             gap: 10px;
         }
+        /* ── TELEMETRIE (CASETA NEAGRĂ) ── */
+        #raport-continut pre {
+            background: #080d14;
+            border: 1px solid var(--border-bright);
+            border-left: 4px solid var(--accent-cyan);
+            border-radius: 8px;
+            padding: 16px;
+            overflow-x: auto;
+            margin: 24px 0;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+        }
 
+        #raport-continut code {
+            font-family: var(--mono);
+            font-size: 0.85rem;
+            color: #a8c7fa;
+            line-height: 1.5;
+        }
         #raport-continut h3:first-child { margin-top: 0; }
 
         #raport-continut h3:first-of-type { 
@@ -614,15 +631,15 @@
 
         const upperStatus = statusText.toUpperCase();
 
-        if (upperStatus.includes('RIDICAT') || upperStatus.includes('ALERTĂ') || (upperStatus.includes('RISC') && !upperStatus.includes('MODERAT'))) {
+        if (upperStatus.includes('RIDICAT') || upperStatus.includes('ALERTĂ')) {
             panel.classList.add('st-alert');
             statusElement.textContent = 'Alertă · Condiții Extreme';
             statusIcon.textContent = '🔴';
-        } else if (upperStatus.includes('MODERAT')) {
+        } else if (upperStatus.includes('MODERAT') || upperStatus.includes('RISC')) {
             panel.classList.add('st-warn');
             statusElement.textContent = 'Risc Moderat · Atenție';
             statusIcon.textContent = '🟡';
-        } else if (upperStatus.includes('SĂNĂTOS') || upperStatus.includes('OPTIM')) {
+        } else if (upperStatus.includes('INEXISTENT') || upperStatus.includes('SĂNĂTOS') || upperStatus.includes('OPTIM')) {
             panel.classList.add('st-safe');
             statusElement.textContent = 'Condiții Optime · Sigur';
             statusIcon.textContent = '🟢';

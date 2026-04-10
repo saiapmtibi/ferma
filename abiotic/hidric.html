@@ -491,6 +491,26 @@
         .disclaimer-card strong {
             color: var(--status-warn); 
         }
+
+        /* ── STILIZARE ARBORE DATE (CODE BLOCK) ── */
+        #raport-continut pre {
+            background: rgba(8, 13, 20, 0.9);
+            border: 1px solid rgba(0, 229, 204, 0.3);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            margin-bottom: 24px;
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.8);
+        }
+        
+        #raport-continut pre code {
+            font-family: var(--mono);
+            font-size: 0.85rem;
+            color: var(--text-primary);
+            line-height: 1.5;
+            white-space: pre;
+        }
+        
         /* ── STILIZARE TABEL MARKDOWN ── */
         #raport-continut table {
             width: 100%; border-collapse: collapse; margin: 20px 0;
@@ -594,7 +614,7 @@
     <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px 24px; margin-top: 24px;">
         <h3 style="text-align: left; margin-top: 0; font-family: var(--sans); font-size: 0.95rem; color: var(--text-primary);">Resurse Științifice</h3>
         <ul style="list-style: none; padding-left: 0; margin-bottom: 0;">
-            <li style="margin-bottom: 8px;"><a href="https://doi.org/10.1016/S0304-4238(99)00114-1" target="_blank" rel="noopener noreferrer" style="color: var(--accent-blue); text-decoration: none; font-size: 0.85rem;">Rodrigo, J. (2000) - Spring frosts in deciduous fruit trees</a></li>
+            <li style="margin-bottom: 8px;"><a href="[https://doi.org/10.1016/S0304-4238(99)00114-1](https://doi.org/10.1016/S0304-4238(99)00114-1)" target="_blank" rel="noopener noreferrer" style="color: var(--accent-blue); text-decoration: none; font-size: 0.85rem;">Rodrigo, J. (2000) - Spring frosts in deciduous fruit trees</a></li>
         </ul>
     </div>
 

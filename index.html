@@ -342,7 +342,7 @@
                 document.getElementById('status-gdd').textContent = data.abiotic_si_feno.gdd;
             }
 
-            // Funcția de colorare semantică
+// Funcția de colorare semantică (Corectată)
             const updateStatus = (elementId, statusText) => {
                 const badge = document.getElementById(elementId);
                 if (!badge || !statusText) return;
@@ -350,19 +350,32 @@
                 badge.textContent = statusText;
                 let text = statusText.toLowerCase();
                 
-                // Colorare semantică (actualizată pentru noile alerte abiotice)
-                if (text.includes('ridicat') || text.includes('alertă') || (text.includes('risc') && !text.includes('moderat'))) {
+                // Setăm un border de bază
+                badge.style.border = '1px solid';
+
+                // 1. REGULA PENTRU ROȘU (Alertă Maximă)
+                if (text.includes('ridicat') || text.includes('alertă')) {
                     badge.style.color = '#ff5252'; 
                     badge.style.backgroundColor = 'rgba(255, 82, 82, 0.15)';
                     badge.style.borderColor = 'rgba(255, 82, 82, 0.3)';
-                } else if (text.includes('moderat')) {
+                } 
+                // 2. REGULA PENTRU GALBEN (Atenționare)
+                else if (text.includes('moderat') || text.includes('risc')) {
                     badge.style.color = '#fb8c00'; 
                     badge.style.backgroundColor = 'rgba(251, 140, 0, 0.15)';
                     badge.style.borderColor = 'rgba(251, 140, 0, 0.3)';
-                } else {
+                } 
+                // 3. REGULA PENTRU VERDE (Sigur / Optim)
+                else if (text.includes('sănătos') || text.includes('inexistent') || text.includes('optim')) {
                     badge.style.color = 'var(--status-safe)'; 
                     badge.style.backgroundColor = 'rgba(0, 230, 118, 0.15)';
                     badge.style.borderColor = 'rgba(0, 230, 118, 0.3)';
+                } 
+                // 4. FALLBACK (Dacă AI-ul trimite un text ciudat, punem gri/neutru)
+                else {
+                    badge.style.color = 'var(--text-muted)';
+                    badge.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
+                    badge.style.borderColor = 'rgba(255, 255, 255, 0.1)';
                 }
             };
 

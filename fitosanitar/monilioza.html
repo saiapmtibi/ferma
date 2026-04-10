@@ -413,26 +413,6 @@
             100% { background-position: -200% 0; }
         }
 
-        /* ── SCAN LINE (decorative) ── */
-        .scan-line {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
-            opacity: 0;
-            animation: scan 8s ease-in-out infinite;
-            z-index: 999;
-            pointer-events: none;
-        }
-
-        @keyframes scan {
-            0%   { top: 0; opacity: 0; }
-            5%   { opacity: 0.5; }
-            95%  { opacity: 0.5; }
-            100% { top: 100vh; opacity: 0; }
-        }
 
     /* ── RESPONSIVE RAPORT ── */
         @media (max-width: 680px) {

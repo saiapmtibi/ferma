@@ -189,7 +189,7 @@
         }
 
         /* ── RESPONSIVE ── */
-        @media (max-width: 680px) {
+       @media (max-width: 680px) {
             .header-official-logo { height: 40px; }
             .header-farm-title { font-size: 0.85rem; max-width: 250px; }
             .header-inner { flex-direction: column; gap: 10px; }
@@ -200,6 +200,7 @@
             .module-card { padding: 30px 20px; }
             footer { flex-direction: column; gap: 20px; text-align: center; padding: 30px 20px; }
             footer .f-right { text-align: center; }
+            .card-centrat { width: 100%; grid-column: auto; }
         }
 
         /* ─── BUTON DESPRE (TOP ACTIONS) ─── */
@@ -268,12 +269,6 @@
 </header>
 
 <main>
-    <div class="top-actions">
-        <a href="despre/despre.html" class="btn-despre">
-            <span class="icon-info">ℹ️</span> Despre
-        </a>
-    </div>
-    
     <h2 class="page-title">Platformă de Predicție Multi-Risc pentru specia <em>Malus domestica</em></h2>
     <div class="beta-disclaimer">
         <strong>[VERSIUNE BETA]</strong> Platforma se află în stadiu activ de testare, calibrare și validare științifică. Pe fondul integrării modelelor de Inteligență Artificială Generativă, rezultatele afișate pot conține erori, neconcordanțe sau halucinații.
@@ -355,6 +350,10 @@
             <div class="module-title">Validare Teren & Teledetecție</div>
         </a>
     </div>
+    <div class="bottom-actions">
+        <a href="despre/despre.html" class="btn-despre">
+            <span class="icon-info">ℹ️</span> Despre
+        </a>
 </main>
      
 <footer>

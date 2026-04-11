@@ -140,6 +140,7 @@
             .card-centrat {
                 width: 100%;
                 grid-column: auto;
+            .top-actions { margin-bottom: 15px; justify-content: center; }
             }
         }
 
@@ -201,6 +202,44 @@
             footer .f-right { text-align: center; }
         }
 
+        /* ─── BUTON DESPRE (TOP ACTIONS) ─── */
+        .top-actions {
+            display: flex;
+            justify-content: flex-start;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .btn-despre {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-family: var(--mono);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-despre:hover {
+            background: rgba(0, 229, 204, 0.1);
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+            transform: translateX(3px);
+            box-shadow: 0 0 15px rgba(0, 229, 204, 0.2);
+        }
+
+        .icon-info {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+        
         /* ── FOOTER STYLES ── */
         footer {
             position: relative;
@@ -230,14 +269,13 @@
 </header>
 
 <main>
+    <div class="top-actions">
+        <a href="despre/despre.html" class="btn-despre">
+            <span class="icon-info">ℹ️</span> Despre Platformă
+        </a>
+    </div>
+    
     <h2 class="page-title">Platformă de Predicție Multi-Risc pentru specia <em>Malus domestica</em></h2>
-    <p class="project-description">
-        <strong>Platforma de Predicție Multi-Risc pentru specia <em>Malus domestica</em> bazată pe Inteligență Artificială Generativă</strong> este un sistem încadrat în agricultura de precizie care transformă datele 
-        brute de microclimat în decizii agronomice proactive. Prin intermediul unui motor de inteligență artificială generativă, platforma procesează simbolic datele de telemetrie în timp real și le corelează 
-        cu modele matematice validate științific. Acesta anticipează astfel presiunea de infecție a patogenilor specifici, dinamica populațiilor de dăunători și impactul stresului abiotic asupra culturii. 
-        Sistemul permite optimizarea ferestrelor de intervenție și a managementului integrat și sustenabil al livezii, reducând amprenta chimică asupra mediului.
-    </p>
-
     <div class="beta-disclaimer">
         <strong>[VERSIUNE BETA]</strong> Platforma se află în stadiu activ de testare, calibrare și validare științifică. Pe fondul integrării modelelor de Inteligență Artificială Generativă, rezultatele afișate pot conține erori, neconcordanțe sau halucinații.
     </div>

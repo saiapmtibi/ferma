@@ -203,26 +203,26 @@
         }
 
         /* ─── BUTON DESPRE (TOP ACTIONS) ─── */
-        .top-actions {
+        .bottom-actions {
             display: flex;
-            justify-content: flex-start;
-            margin-bottom: 20px;
+            justify-content: center;
+            margin-top: 50px; /* Spațiu generos față de grid-ul de module */
             width: 100%;
         }
 
         .btn-despre {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
+            gap: 10px;
+            padding: 12px 28px;
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid var(--border);
             border-radius: 8px;
             color: var(--text-secondary);
             font-family: var(--mono);
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             text-decoration: none;
             transition: all 0.3s ease;
         }
@@ -231,15 +231,14 @@
             background: rgba(0, 229, 204, 0.1);
             border-color: var(--accent-cyan);
             color: var(--accent-cyan);
-            transform: translateX(3px);
-            box-shadow: 0 0 15px rgba(0, 229, 204, 0.2);
+            transform: translateY(-3px); /* Se ridică puțin la hover */
+            box-shadow: 0 8px 20px rgba(0, 229, 204, 0.15);
         }
 
         .icon-info {
-            font-size: 1rem;
+            font-size: 1.1rem;
             opacity: 0.8;
         }
-        
         /* ── FOOTER STYLES ── */
         footer {
             position: relative;
@@ -271,7 +270,7 @@
 <main>
     <div class="top-actions">
         <a href="despre/despre.html" class="btn-despre">
-            <span class="icon-info">ℹ️</span> Despre Platformă
+            <span class="icon-info">ℹ️</span> Despre
         </a>
     </div>
     

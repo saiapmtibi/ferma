@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Despre Platformă | ULBS Sibiu</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-deep:       #080d14;
+            --bg-card:       #111c2b;
+            --bg-card2:      #162236;
+            --border:        rgba(99, 179, 237, 0.12);
+            --text-primary:  #e8f4fd;
+            --text-secondary:#7fa8c9;
+            --text-muted:    #3d6080;
+            --accent-cyan:   #00e5cc;
+            --status-safe:   #00e676;
+            --mono: 'Space Mono', monospace;
+            --sans: 'Inter', sans-serif;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--sans);
+            background: var(--bg-deep);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* ── GRID TEXTURE ── */
+        body::before {
+            content: ''; position: fixed; inset: 0;
+            background-image: linear-gradient(rgba(79,195,247,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(79,195,247,0.025) 1px, transparent 1px);
+            background-size: 40px 40px; pointer-events: none; z-index: 0;
+        }
+
+        body::after {
+            content: ''; position: fixed; top: -20%; left: 50%; transform: translateX(-50%);
+            width: 800px; height: 800px; background: radial-gradient(ellipse, rgba(0,229,204,0.06) 0%, transparent 70%);
+            pointer-events: none; z-index: 0;
+        }
+
+        /* ── HEADER ── */
+        header {
+            position: relative; z-index: 10; padding: 0 40px;
+            border-bottom: 1px solid var(--border);
+            background: rgba(8,13,20,0.8); backdrop-filter: blur(20px);
+        }
+
+        .header-inner {
+            max-width: 1100px; margin: 0 auto; display: flex;
+            align-items: center; justify-content: space-between; padding: 10px 0;
+        }
+
+        .header-logo-container {
+            display: flex; flex-direction: column; align-items: center; gap: 10px;
+        }
+
+        .header-official-logo { height: 55px; width: auto; display: block; }
+        
+        .header-farm-title { 
+            font-family: var(--sans); font-weight: 600; font-size: 1.1rem; 
+            color: var(--text-primary); line-height: 1.2; text-align: center; letter-spacing: -0.5px;
+        }
+
+        /* ── MAIN ── */
+        main {
+            position: relative; z-index: 10; max-width: 1100px; margin: 0 auto;
+            padding: 60px 40px 80px; flex-grow: 1; width: 100%;
+        }
+
+        .top-actions {
+            display: flex; justify-content: flex-start; margin-bottom: 20px;
+        }
+
+        .btn-back {
+            display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border);
+            border-radius: 8px; color: var(--text-secondary); font-family: var(--mono);
+            font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;
+            text-decoration: none; transition: all 0.3s ease;
+        }
+
+        .btn-back:hover {
+            background: rgba(0, 229, 204, 0.1); border-color: var(--accent-cyan);
+            color: var(--accent-cyan); transform: translateX(-3px);
+            box-shadow: 0 0 15px rgba(0, 229, 204, 0.2);
+        }
+
+        /* ── CONTENT STYLES ── */
+        .content-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 40px 50px;
+            margin-bottom: 40px;
+            line-height: 1.7;
+        }
+
+        .page-title {
+            font-size: 2rem; color: var(--accent-cyan); margin-bottom: 20px; font-weight: 700;
+        }
+
+        .intro-text {
+            font-size: 1.05rem; color: var(--text-secondary); margin-bottom: 40px;
+        }
+
+        h3.level-title {
+            font-family: var(--mono); font-size: 1.1rem; color: var(--text-primary);
+            text-transform: uppercase; letter-spacing: 1px; margin: 35px 0 15px 0;
+            padding-bottom: 10px; border-bottom: 1px solid var(--border);
+        }
+        h3.level-title span { color: var(--accent-cyan); font-weight: bold; }
+
+        .content-card p { font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 15px; }
+        
+        .content-card ul { list-style: none; padding-left: 0; margin-bottom: 20px; }
+        .content-card ul li {
+            position: relative; padding-left: 20px; margin-bottom: 12px;
+            font-size: 0.95rem; color: var(--text-secondary);
+        }
+        .content-card ul li::before {
+            content: '▹'; position: absolute; left: 0; color: var(--accent-cyan); font-size: 1rem; top: 1px;
+        }
+        
+        strong.highlight { color: var(--text-primary); font-weight: 600; }
+
+        /* ── INTERACTIVE DROPDOWNS ── */
+        .interactive-section {
+            background: var(--bg-card2);
+            border: 1px solid var(--accent-cyan);
+            border-radius: 16px;
+            padding: 40px 50px;
+            text-align: center;
+        }
+
+        .interactive-section h3 {
+            font-family: var(--sans); font-size: 1.3rem; color: var(--text-primary);
+            margin-bottom: 30px; font-weight: 600;
+        }
+
+        .dropdown-container {
+            display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;
+        }
+
+        .form-group {
+            display: flex; flex-direction: column; text-align: left; width: 100%; max-width: 350px;
+        }
+
+        .form-group label {
+            font-family: var(--mono); font-size: 0.75rem; color: var(--accent-cyan);
+            text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;
+        }
+
+        select {
+            appearance: none;
+            background: rgba(8, 13, 20, 0.8);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            font-family: var(--sans);
+            font-size: 1rem;
+            padding: 14px 20px;
+            border-radius: 8px;
+            outline: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2300e5cc%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px top 50%;
+            background-size: 12px auto;
+        }
+
+        select:hover { border-color: var(--accent-cyan); }
+        select:focus { border-color: var(--accent-cyan); box-shadow: 0 0 10px rgba(0, 229, 204, 0.2); }
+        select:disabled { opacity: 0.5; cursor: not-allowed; border-color: var(--border); }
+        
+        option { background: var(--bg-card); color: var(--text-primary); }
+
+        /* ── FOOTER ── */
+        footer {
+            position: relative; z-index: 10; max-width: 1100px; width: 100%; margin: 0 auto;
+            padding: 40px; border-top: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between;
+        }
+
+        footer .f-left { font-family: var(--mono); font-size: 0.68rem; color: var(--text-muted); line-height: 1.8; }
+        footer .f-right { font-family: var(--mono); font-size: 0.68rem; color: var(--text-muted); text-align: right; }
+
+        @media (max-width: 768px) {
+            .header-inner { flex-direction: column; }
+            main { padding: 30px 20px 60px; }
+            .content-card, .interactive-section { padding: 30px 20px; }
+            footer { flex-direction: column; gap: 20px; text-align: center; }
+            footer .f-right { text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-inner">
+        <div class="header-logo-container">
+            <img src="../logo-oficial.png" alt="Logo Oficial ULBS Sibiu" class="header-official-logo">
+            <h1 class="header-farm-title">Ferma Didactică și de Cercetare Rusciori</h1>
+        </div>
+    </div>
+</header>
+
+<main>
+    <div class="top-actions">
+        <a href="../index.html" class="btn-back">← Înapoi la Dashboard</a>
+    </div>
+
+    <div class="content-card">
+        <h2 class="page-title">Arhitectura Sistemului</h2>
+        <p class="intro-text">Arhitectura platformei este structurată pe un pipeline de date format din 5 nivele interdependente, care funcționează într-o buclă continuă de tip feed-forward cu calibrare empirică.</p>
+
+        <h3 class="level-title"><span>Nivelul 1:</span> Achiziția Datelor (Data Ingestion Level)</h3>
+        <p>Acest nivel reprezintă interfața sistemului cu mediul fizic, având rolul de a agrega date heterogene, spațio-temporale.</p>
+        <ul>
+            <li><strong class="highlight">Vectorul Istoric (Telemetrie In-Situ):</strong> Achiziția datelor deterministe de microclimat prin intermediul stației meteorologice amplasate în livadă. Datele brute (temperatură, umiditate, radiație solară, viteza vântului, precipitații) sunt stocate și structurate local într-o bază de date relațională (SQLite).</li>
+            <li><strong class="highlight">Vectorul Predictiv (Prognoză API):</strong> Extragerea datelor meteorologice pe un orizont de 48 de ore de pe site-ul <em>openweathermap.org</em>, necesare translației de la o analiză retrospectivă la una proactivă (prevenție).</li>
+        </ul>
+
+        <h3 class="level-title"><span>Nivelul 2:</span> Procesare Deterministă și Modelare Matematică</h3>
+        <p>Aici are loc calculul „rigid”, bazat pe ecuații imuabile, unde rețelele neuronale nu au voie să intervină. Sistemul aplică reguli stricte (If-Then) și modele validate științific:</p>
+        <ul>
+            <li><strong class="highlight">Modele Fitosanitare:</strong> Evaluarea ferestrelor de infecție prin algoritmi consacrați (ex: Modelul Mills pentru <em>Venturia inaequalis</em>, Modelul Xu pentru <em>Podosphaera leucotricha</em>).</li>
+            <li><strong class="highlight">Modele Fiziologice și Abiotice:</strong> Calcularea parametrilor critici precum Acumularea Termică (GDD - Growing Degree Days pentru fenofază), Deficitul de Presiune a Vaporilor (VPD) și bilanțul hidric curent al solului.</li>
+            <li><strong class="highlight">Output:</strong> Rezultatul acestui strat este un arbore decizional clar, cu statusuri binare sau pe categorii (Inexistent / Moderat / Ridicat).</li>
+        </ul>
+
+        <h3 class="level-title"><span>Nivelul 3:</span> Raționament Generativ și Sinteză (Cognitive Level)</h3>
+        <p>Acest nivel transformă logica matematică rece într-o decizie agronomică aplicabilă, utilizând un Model de Limbaj Mare (LLM).</p>
+        <ul>
+            <li><strong class="highlight">Mecanism de Funcționare:</strong> Motorul de Inteligență Artificială primește ca input (prompt) datele procesate de nivelul simbolic (nivelul 2), însoțite de un set de metaparametri (ex: interzicerea halucinațiilor, respectarea principiului precauției).</li>
+            <li><strong class="highlight">Valoare Adăugată:</strong> Sistemul corelează simultan mai mulți factori complecși (ex: impactul stresului mecanic eolian asupra riscului de infecție cu monilioză) și formulează sinteze, diagnostice și recomandări tehnice de intervenție, adaptate fenofazei curente a culturii.</li>
+        </ul>
+
+        <h3 class="level-title"><span>Nivelul 4:</span> Validare Empirică: Ground-Truth și Calibrare</h3>
+        <p>Un sistem hibrid necesită ancorare în realitatea obiectivă pentru a preveni deviația (model drift). Acest strat este elementul de noutate majoră în arhitectură:</p>
+        <ul>
+            <li><strong class="highlight">Teledetecție și Fenotipare:</strong> Integrarea indicilor multispectrali (ortofotoplanuri NDVI generate prin zboruri cu UAV) și a imagisticii RGB in-situ pentru a evalua vigoarea reală a foliajului sau prezența fizică a agenților patogeni/dăunătorilor (capcane entomologice).</li>
+            <li><strong class="highlight">Registrul Agrotehnic:</strong> Inputul uman detaliat (norme de irigare aplicate, tratamente fitosanitare executate, fertilizări).</li>
+            <li><strong class="highlight">Impact:</strong> Acest nivel funcționează ca o buclă de feedback. El afirmă sau infirmă predicțiile algoritmice și neuronale, validând exactitatea platformei.</li>
+        </ul>
+
+        <h3 class="level-title"><span>Nivelul 5:</span> Prezentare și Trasabilitate (UI & Persistence Layer)</h3>
+        <p>Etapa finală se ocupă de diseminarea informației și de formarea memoriei instituționale a fermei.</p>
+        <ul>
+            <li><strong class="highlight">Prezentare Dinamică:</strong> Generarea unor obiecte structurate (fișiere JSON) care alimentează asincron un Dashboard web responsiv. Acesta oferă fermierului sau cercetătorului o interfață clară, scindată în cele 4 module de expertiză.</li>
+            <li><strong class="highlight">Arhivare și Trasabilitate:</strong> Consolidarea rapoartelor sub formă de documente tip Markdown (.md). Acest aspect asigură un registru de tip arhiva, permițând interogări ulterioare, auditarea tratamentelor aplicate (esențial pentru certificările ecologice) și constituirea unui set de date extins pentru antrenarea viitoarelor modele AI.</li>
+        </ul>
+
+        <hr style="border:none; border-top:1px solid var(--border); margin: 40px 0;">
+
+        <h2 class="page-title" style="font-size: 1.6rem;">Structura Platformei: Modulele de Interfață</h2>
+        <p>Rezultatul acestui pipeline complex este distribuit în 4 module de expertiză vizibile în Dashboard:</p>
+        <ul>
+            <li><strong class="highlight">Modulul Fitosanitar:</strong> Evaluează și anticipează infecțiile fungice majore (Venturia inaequalis, Podosphaera leucotricha, Monilinia fructigena).</li>
+            <li><strong class="highlight">Modulul Entomologic (În dezvoltare):</strong> Monitorizează dinamica dăunătorilor specifici (Păduchele din San Jose, Păduchele lânos, Viermele merelor, Păianjenul roșu).</li>
+            <li><strong class="highlight">Modulul de Stres Abiotic:</strong> Monitorizează factorii de mediu extremi care afectează fiziologia plantei (stres hidric, termic, radiativ și eolian).</li>
+            <li><strong class="highlight">Modulul de Validare Teren & Teledetecție  (În dezvoltare):</strong> Interfața prin care specialistul introduce datele de la Nivelul 4 (ortofoto NDVI, poze in-situ, jurnal de tratamente).</li>
+        </ul>
+    </div>
+
+    <div class="interactive-section">
+        <h3>Fundamentul Științific al Rapoartelor</h3>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 25px;">Selectați un modul și un raport pentru a vizualiza modelul validat științific.</p>
+        
+        <div class="dropdown-container">
+            <div class="form-group">
+                <label for="modul-select">Selectați Modulul</label>
+                <select id="modul-select">
+                    <option value="none" selected disabled hidden>Alegeți un modul...</option>
+                    <option value="modul1">Modul 1 - Fitosanitar</option>
+                    <option value="modul2">Modul 2 - Entomologic</option>
+                    <option value="modul3">Modul 3 - Abiotic</option>
+                    <option value="modul4">Modul 4 - Validare Teren</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="raport-select">Alegeți Raportul</label>
+                <select id="raport-select" disabled>
+                    <option value="none">În așteptare selecție...</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="model-info-box" style="display: none; margin-top: 30px; text-align: left; background: rgba(0, 229, 204, 0.05); border-left: 4px solid var(--accent-cyan); padding: 20px; border-radius: 0 8px 8px 0;">
+            <h4 id="model-titlu" style="font-family: var(--mono); color: var(--accent-cyan); margin-bottom: 10px; font-size: 1.1rem;">Titlu Model</h4>
+            <p id="model-descriere" style="font-size: 0.95rem; color: var(--text-primary); line-height: 1.6; margin: 0;">Descrierea modelului va apărea aici.</p>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <div class="f-left">
+        © 2026 Asist. Univ. Dr. Ing. <strong style="color:var(--text-secondary)">Tiberiu Drăghici</strong><br>
+        Facultatea de Științe Agricole, Industrie Alimentară și Protecția Mediului<br>
+        Universitatea „Lucian Blaga" din Sibiu
+    </div>
+    <div class="f-right">
+        Academic Framework v3.1<br>
+        <span style="color: var(--accent-cyan); opacity:0.6;">AI-Powered Multi-Risk Agro-Intelligence</span>
+    </div>
+</footer>
+
+<script>
+    const modulSelect = document.getElementById('modul-select');
+    const raportSelect = document.getElementById('raport-select');
+    const infoBox = document.getElementById('model-info-box');
+    const modelTitlu = document.getElementById('model-titlu');
+    const modelDescriere = document.getElementById('model-descriere');
+
+    // Structura rapoartelor
+    const rapoarteMap = {
+        'modul1': [
+            { text: 'Alegeți...', value: 'none', disabled: true, selected: true, hidden: true },
+            { text: 'Venturia inaequalis (Rapăn)', value: 'venturia' },
+            { text: 'Podosphaera leucotricha (Făinare)', value: 'podosphaera' },
+            { text: 'Monilinia fructigena (Monilioză)', value: 'monilinia' }
+        ],
+        'modul3': [
+            { text: 'Alegeți...', value: 'none', disabled: true, selected: true, hidden: true },
+            { text: 'Stres Termic', value: 'termic' },
+            { text: 'Stres Hidric', value: 'hidric' },
+            { text: 'Stres Radiativ', value: 'radiativ' },
+            { text: 'Stres Eolian', value: 'eolian' }
+        ],
+        'modul2': [{ text: 'În lucru...', value: 'wip', disabled: true }],
+        'modul4': [{ text: 'În lucru...', value: 'wip', disabled: true }]
+    };
+
+    // Baza de date cu modelele științifice
+    const modeleStiintifice = {
+        'venturia': {
+            titlu: "Modelul Mills (1989) revizuit",
+            descriere: "Bazează predicția infecției primare pe corelația strictă dintre temperatura medie a aerului și numărul de ore de umectare continuă a foliajului (RH > 90%). Necesită ploaie pentru declanșare."
+        },
+        'podosphaera': {
+            titlu: "Modelul Xu (1999)",
+            descriere: "Spre deosebire de rapăn, ploaia abundentă (>0mm) acționează ca factor limitant (spală conidiile). Fereastra de risc major apare la umiditate relativă ridicată (>70%) și temperaturi optime între 15-25°C."
+        },
+        'monilinia': {
+            titlu: "Modelul Xu & Robinson (2000)",
+            descriere: "Analizează riscul de infecție pe baza umidității prelungite (>85%) și a temperaturilor de 20-25°C. Modelul integrează alertele de precipitații extreme sau vânt puternic ca factori de micro-leziuni (porți de intrare pentru patogen)."
+        },
+        'termic': {
+            titlu: "Praguri de Rezistență Fiziologică (T10 / T-PA)",
+            descriere: "Sistemul compară extremele termice înregistrate/prognozate cu toleranța specifică a fiecărei fenofaze. T10 reprezintă temperatura la care se înregistrează 10% mortalitate a mugurilor/florilor, iar T-PA reprezintă pragul de alertă pentru stres."
+        },
+        'hidric': {
+            titlu: "Deficitul de Presiune a Vaporilor (VPD) și Bilanțul Solului",
+            descriere: "VPD (calculat pe baza T și RH) indică forța de evaporare a aerului. Este corelat cu ecuația bilanțului apei în sol pe 72h (Precipitații minus Evapotranspirația de referință ET₀) pentru a determina necesarul exact de irigare."
+        },
+        'radiativ': {
+            titlu: "Stres Radiativ și Risc de Sunburn",
+            descriere: "Corelează radiația solară directă (>800 W/m²) cu temperaturile maxime (>30°C). În faza de creștere a fructului, aceste date avertizează asupra riscului de arsură solară și necesitatea plaselor de umbrire."
+        },
+        'eolian': {
+            titlu: "Praguri Mecanice și Entomofile",
+            descriere: "Evaluează rafelele de vânt. Modelele variază în funcție de fenofază: vânt >5 m/s limitează zborul insectelor polenizatoare (risc critic în înflorire), iar vânt >15 m/s implică risc mecanic (scuturare/rupere)."
+        }
+    };
+
+    // Actualizare lista 2 la schimbarea listei 1
+    modulSelect.addEventListener('change', function() {
+        const options = rapoarteMap[this.value];
+        raportSelect.innerHTML = '';
+        infoBox.style.display = 'none'; // Ascundem info box-ul până la o nouă selecție
+
+        if (options) {
+            raportSelect.disabled = false;
+            
+            // Verificăm dacă e un modul "WIP" (în lucru)
+            if (options.length === 1 && options[0].value === 'wip') {
+                const element = document.createElement('option');
+                element.textContent = options[0].text;
+                element.value = options[0].value;
+                raportSelect.appendChild(element);
+                raportSelect.disabled = true; // Blocăm selectul doar dacă e WIP
+            } else {
+                // Altfel, populăm cu rapoartele reale
+                options.forEach(opt => {
+                    const element = document.createElement('option');
+                    element.textContent = opt.text;
+                    element.value = opt.value;
+                    
+                    if (opt.disabled) element.disabled = true;
+                    if (opt.hidden) element.hidden = true;
+                    if (opt.selected) element.selected = true;
+                    
+                    raportSelect.appendChild(element);
+                });
+            }
+        }
+    });
+
+    // Afișare date științifice la schimbarea listei 2
+    raportSelect.addEventListener('change', function() {
+        const modelData = modeleStiintifice[this.value];
+        
+        if (modelData) {
+            modelTitlu.textContent = modelData.titlu;
+            modelDescriere.textContent = modelData.descriere;
+            infoBox.style.display = 'block'; // Afișăm caseta
+        } else {
+            infoBox.style.display = 'none';
+        }
+    });
+</script>
+
+</body>
+</html>

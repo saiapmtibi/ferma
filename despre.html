@@ -111,6 +111,7 @@
 
         .intro-text {
             font-size: 1.05rem; color: var(--text-secondary); margin-bottom: 40px;
+            text-align: justify;
         }
 
         h3.level-title {
@@ -120,15 +121,16 @@
         }
         h3.level-title span { color: var(--accent-cyan); font-weight: bold; }
 
-        .content-card p { font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 15px; }
+        .content-card p { 
+            font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 15px; 
+            text-align: justify;
+        }
         
         .content-card ul { list-style: none; padding-left: 0; margin-bottom: 20px; }
-        .content-card ul li {
-            position: relative; padding-left: 20px; margin-bottom: 12px;
+       .content-card ul li {
+            margin-bottom: 12px;
             font-size: 0.95rem; color: var(--text-secondary);
-        }
-        .content-card ul li::before {
-            content: '▹'; position: absolute; left: 0; color: var(--accent-cyan); font-size: 1rem; top: 1px;
+            text-align: justify;
         }
         
         strong.highlight { color: var(--text-primary); font-weight: 600; }
@@ -230,7 +232,7 @@
             <li><strong class="highlight">Vectorul Predictiv (Prognoză API):</strong> Extragerea datelor meteorologice pe un orizont de 48 de ore de pe site-ul <em>openweathermap.org</em>, necesare translației de la o analiză retrospectivă la una proactivă (prevenție).</li>
         </ul>
 
-        <h3 class="level-title"><span>Nivelul 2:</span> Procesare Deterministă și Modelare Matematică</h3>
+        <h3 class="level-title"><span>Nivelul 2:</span> Procesare Deterministă și Modelare Matematică (Symbolic Processing Level)</h3>
         <p>Aici are loc calculul „rigid”, bazat pe ecuații imuabile, unde rețelele neuronale nu au voie să intervină. Sistemul aplică reguli stricte (If-Then) și modele validate științific:</p>
         <ul>
             <li><strong class="highlight">Modele Fitosanitare:</strong> Evaluarea ferestrelor de infecție prin algoritmi consacrați (ex: Modelul Mills pentru <em>Venturia inaequalis</em>, Modelul Xu pentru <em>Podosphaera leucotricha</em>).</li>
@@ -245,7 +247,7 @@
             <li><strong class="highlight">Valoare Adăugată:</strong> Sistemul corelează simultan mai mulți factori complecși (ex: impactul stresului mecanic eolian asupra riscului de infecție cu monilioză) și formulează sinteze, diagnostice și recomandări tehnice de intervenție, adaptate fenofazei curente a culturii.</li>
         </ul>
 
-        <h3 class="level-title"><span>Nivelul 4:</span> Validare Empirică: Ground-Truth și Calibrare</h3>
+        <h3 class="level-title"><span>Nivelul 4:</span> Validare Empirică (Ground-Truth și Calibrare)</h3>
         <p>Un sistem hibrid necesită ancorare în realitatea obiectivă pentru a preveni deviația (model drift). Acest strat este elementul de noutate majoră în arhitectură:</p>
         <ul>
             <li><strong class="highlight">Teledetecție și Fenotipare:</strong> Integrarea indicilor multispectrali (ortofotoplanuri NDVI generate prin zboruri cu UAV) și a imagisticii RGB in-situ pentru a evalua vigoarea reală a foliajului sau prezența fizică a agenților patogeni/dăunătorilor (capcane entomologice).</li>

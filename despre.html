@@ -94,7 +94,22 @@
             color: var(--accent-cyan); transform: translateX(-3px);
             box-shadow: 0 0 15px rgba(0, 229, 204, 0.2);
         }
+        /* ── SUMMARY BOX ── */
+        .summary-box {
+            background: rgba(0, 229, 204, 0.03);
+            border: 1px dashed var(--accent-cyan);
+            border-radius: 12px;
+            padding: 30px 40px;
+            margin-bottom: 40px;
+            text-align: justify;
+        }
 
+        .summary-box p {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin: 0;
+        }
         /* ── CONTENT STYLES ── */
         .content-card {
             background: var(--bg-card);
@@ -197,11 +212,14 @@
         footer .f-right { font-family: var(--mono); font-size: 0.68rem; color: var(--text-muted); text-align: right; }
 
         @media (max-width: 768px) {
-            .header-inner { flex-direction: column; }
+            .header-official-logo { height: 40px; }
+            .header-farm-title { font-size: 0.85rem; max-width: 250px; }
+            .header-inner { flex-direction: column; gap: 10px; }
             main { padding: 30px 20px 60px; }
             .content-card, .interactive-section { padding: 30px 20px; }
             footer { flex-direction: column; gap: 20px; text-align: center; }
             footer .f-right { text-align: center; }
+            .summary-box { padding: 20px; }
         }
     </style>
 </head>
@@ -221,9 +239,16 @@
         <a href="index.html" class="btn-back">← Înapoi la Dashboard</a>
     </div>
 
+    <div class="summary-box">
+        <p><strong>Platforma de Predicție Multi-Risc pentru specia <em>Malus domestica</em></strong> este un sistem de agricultură de precizie fundamentat pe o <strong>Arhitectură Neuro-Simbolică</strong>. Aceasta transformă datele brute de microclimat și prognoză în decizii agronomice proactive, 
+            operând printr-un pipeline de date pe 5 niveluri. Sistemul separă rigurozitatea matematică de capacitatea de sinteză: procesează determinist telemetria prin modele validate științific (Nivelul Simbolic), iar ulterior utilizează un motor de Inteligență Artificială Generativă 
+            (Nivelul Cognitiv) pentru a formula recomandări în limbaj natural. Platforma anticipează presiunea patogenilor, dinamica dăunătorilor și impactul stresului abiotic, calibrând constant predicțiile printr-o buclă de validare din teren (Ground-Truth).
+            Datele sunt distribuite în 4 module de expertiză, permițând optimizarea ferestrelor de intervenție, managementul integrat al livezii și reducerea amprentei chimice.</p>
+    </div>
+    
     <div class="content-card">
         <h2 class="page-title">Arhitectura Sistemului</h2>
-        <p class="intro-text">Arhitectura platformei este structurată pe un pipeline de date format din 5 nivele interdependente, care funcționează într-o buclă continuă de tip feed-forward cu calibrare empirică.</p>
+        <p class="intro-text">Arhitectura platformei este structurată pe un pipeline de date format din 5 nivele interdependente, care funcționează într-o buclă continuă de tip feed-forward.</p>
 
         <h3 class="level-title"><span>Nivelul 1:</span> Achiziția Datelor (Data Ingestion Level)</h3>
         <p>Acest nivel reprezintă interfața sistemului cu mediul fizic, având rolul de a agrega date heterogene, spațio-temporale.</p>

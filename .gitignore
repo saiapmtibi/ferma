@@ -1,2 +1,13 @@
-rapoarte_pdf/
-agro_expert.py
+# Ignoră toate scripturile Python
+*.py
+
+# Ignoră fișierele de cache generate automat de Python
+__pycache__/
+*.pyc
+
+# Ignoră baza de date locală (dacă o vei copia vreodată aici)
+*.sdb
+*.sqlite
+
+# Ignoră fișierele de mediu virtual (dacă folosești) sau de configurare locale
+.env

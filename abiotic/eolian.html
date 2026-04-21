@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stres Eolian | ULBS Sibiu</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <style>
+        :root {
+            --bg-deep:       #080d14;
+            --bg-mid:        #0d1520;
+            --bg-card:       #111c2b;
+            --bg-card2:      #162236;
+            --border:        rgba(99, 179, 237, 0.12);
+            --border-bright: rgba(99, 179, 237, 0.35);
+
+            --text-primary:  #e8f4fd;
+            --text-secondary:#7fa8c9;
+            --text-muted:    #3d6080;
+
+            --accent-blue:   #4fc3f7;
+            --accent-cyan:   #00e5cc;
+
+            --status-safe:   #00e676;
+            --status-warn:   #ffd600;
+            --status-alert:  #ff4444;
+
+            --mono: 'Space Mono', monospace;
+            --serif: 'DM Serif Display', serif;
+            --sans: 'Inter', sans-serif;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--sans);
+            background: var(--bg-deep);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ── GRID TEXTURE ── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(79,195,247,0.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(79,195,247,0.025) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ── RADIAL GLOW ── */
+        body::after {
+            content: '';
+            position: fixed;
+            top: -20%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(ellipse, rgba(0,229,204,0.06) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ── HEADER ── */
+        header {
+            position: relative;
+            z-index: 10;
+            padding: 0 40px;
+            border-bottom: 1px solid var(--border);
+            background: rgba(8,13,20,0.8);
+            backdrop-filter: blur(20px);
+        }
+
+        .header-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+        }
+
+        .header-logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center; 
+            gap: 10px;             
+        }
+
+        .header-official-logo {
+            height: 55px; 
+            width: auto;
+            display: block;
+        }
+
+        .header-farm-title {
+            font-family: var(--sans);
+            font-weight: 600;
+            font-size: 1.1rem; 
+            color: var(--text-primary);
+            line-height: 1.2;
+            text-align: center;
+            letter-spacing: -0.5px;
+        }
+
+        .live-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--mono);
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--status-safe);
+            animation: blink 2s ease-in-out infinite;
+            box-shadow: 0 0 8px var(--status-safe);
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* ── MAIN LAYOUT ── */
+        main {
+            position: relative;
+            z-index: 10;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 40px 80px;
+        }
+
+        /* ── STATUS PANEL ── */
+        .status-panel {
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            background: var(--bg-card);
+            overflow: hidden;
+            margin-bottom: 28px;
+        }
+
+        .status-top {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: center;
+            padding: 24px 32px;
+            gap: 20px;
+        }
+
+        .status-label {
+            font-family: var(--mono);
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        #status-text {
+            font-family: var(--serif);
+            font-size: 2.2rem;
+            line-height: 1.1;
+            color: var(--status-safe);
+            transition: color 0.6s ease;
+        }
+
+        .status-icon-wrap {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            transition: border-color 0.6s ease, box-shadow 0.6s ease;
+            flex-shrink: 0;
+        }
+
+        .status-bar-strip {
+            height: 4px;
+            background: var(--status-safe);
+            transition: background 0.6s ease, box-shadow 0.6s ease;
+            box-shadow: 0 0 20px var(--status-safe);
+        }
+
+        /* Status variants */
+        .st-safe  #status-text   { color: var(--status-safe); }
+        .st-safe  .status-icon-wrap { border-color: rgba(0,230,118,0.4); box-shadow: 0 0 20px rgba(0,230,118,0.2); }
+        .st-safe  .status-bar-strip { background: var(--status-safe); box-shadow: 0 0 20px var(--status-safe); }
+
+        .st-warn  #status-text   { color: var(--status-warn); }
+        .st-warn  .status-icon-wrap { border-color: rgba(255,214,0,0.4); box-shadow: 0 0 20px rgba(255,214,0,0.15); }
+        .st-warn  .status-bar-strip { background: var(--status-warn); box-shadow: 0 0 20px var(--status-warn); }
+
+        .st-alert #status-text   { color: var(--status-alert); }
+        .st-alert .status-icon-wrap { border-color: rgba(255,68,68,0.4); box-shadow: 0 0 20px rgba(255,68,68,0.2); animation: pulse-alert 1.5s ease-in-out infinite; }
+        .st-alert .status-bar-strip { background: var(--status-alert); box-shadow: 0 0 20px var(--status-alert); }
+
+        @keyframes pulse-alert {
+            0%, 100% { box-shadow: 0 0 20px rgba(255,68,68,0.2); }
+            50% { box-shadow: 0 0 35px rgba(255,68,68,0.5); }
+        }
+
+        /* ── META ROW ── */
+        .meta-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+        .meta-row.single-banner {
+            grid-template-columns: 1fr; 
+        }
+
+        .meta-card.banner-text {
+            font-family: var(--sans);
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            text-align: center; 
+            padding: 24px 32px;
+        }
+        .meta-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 18px 22px;
+        }
+
+        /* ── REPORT CARD ── */
+        .report-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .report-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: center; 
+            padding: 18px 28px;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-card2);
+        }
+
+        .report-card-header h2 {
+            font-family: var(--sans);
+            font-weight: 700; 
+            font-size: 1.2rem; 
+            color: var(--text-primary); 
+            letter-spacing: 4px; 
+            margin: 0;
+        }
+
+        .report-body {
+            padding: 32px 36px 36px;
+        }
+
+        /* ── MARKDOWN STYLES ── */
+        #raport-continut h3 {
+            font-family: var(--mono);
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent-cyan);
+            margin: 32px 0 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        /* ── TELEMETRIE (CASETA NEAGRĂ) ── */
+        #raport-continut pre {
+            background: #080d14;
+            border: 1px solid var(--border-bright);
+            border-left: 4px solid var(--accent-cyan);
+            border-radius: 8px;
+            padding: 16px;
+            overflow-x: auto;
+            margin: 24px 0;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+        }
+
+        #raport-continut code {
+            font-family: var(--mono);
+            font-size: 0.85rem;
+            color: #a8c7fa;
+            line-height: 1.5;
+        }
+        #raport-continut h3:first-child { margin-top: 0; }
+
+        #raport-continut h3:first-of-type { 
+            display: none; 
+        }
+
+        #raport-continut ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        #raport-continut ul li {
+            font-family: var(--sans);
+            font-size: 0.93rem;
+            font-weight: 400;
+            color: var(--text-primary);
+            line-height: 1.65;
+            padding: 12px 16px 12px 44px;
+            background: rgba(79, 195, 247, 0.04);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            position: relative;
+        }
+
+        #raport-continut ul li::before {
+            content: '';
+            position: absolute;
+            left: 16px;
+            color: var(--accent-cyan);
+            font-family: var(--mono);
+            font-size: 0.8rem;
+            top: 14px;
+            opacity: 0.7;
+        }
+
+        #raport-continut p {
+            font-size: 0.93rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin: 10px 0;
+        }
+
+        #raport-continut strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* ── DIVIDER ── */
+        .h3-divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 8px 0 0;
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            position: relative;
+            z-index: 10;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 40px 50px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        footer .f-left {
+            font-family: var(--mono);
+            font-size: 0.68rem;
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+
+        footer .f-right {
+            font-family: var(--mono);
+            font-size: 0.68rem;
+            color: var(--text-muted);
+            text-align: right;
+        }
+
+        /* ── LOADING STATE ── */
+        .loading-shimmer {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .shimmer-line {
+            height: 14px;
+            background: linear-gradient(90deg, var(--bg-card2) 25%, rgba(79,195,247,0.06) 50%, var(--bg-card2) 75%);
+            background-size: 200% 100%;
+            border-radius: 6px;
+            animation: shimmer 1.6s infinite;
+        }
+
+        .shimmer-line:nth-child(2) { width: 85%; animation-delay: 0.1s; }
+        .shimmer-line:nth-child(3) { width: 70%; animation-delay: 0.2s; }
+        .shimmer-line:nth-child(4) { width: 90%; animation-delay: 0.05s; }
+        .shimmer-line:nth-child(5) { width: 60%; animation-delay: 0.15s; }
+
+        @keyframes shimmer {
+            0%   { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+    /* ── RESPONSIVE RAPORT ── */
+        @media (max-width: 680px) {
+            header { padding: 0 20px; }
+            .header-inner { flex-direction: column; gap: 10px; }
+            .header-official-logo { height: 40px; }
+            .header-farm-title { font-size: 0.85rem; max-width: 250px; }
+            
+            main { padding: 20px 10px 60px; } 
+            .report-body { padding: 20px 12px; } 
+            
+            #raport-continut ul li {
+                padding: 18px 14px 18px 38px; 
+                font-size: 0.85rem;
+                line-height: 1.6;
+            }
+            #raport-continut ul li::before { left: 12px; top: 18px; }
+
+            #raport-continut table {
+                display: block;
+                width: 100%;
+                overflow-x: auto;
+                white-space: nowrap; 
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            .meta-card.banner-text { padding: 15px; font-size: 0.85rem; }
+            
+            footer { flex-direction: column; gap: 20px; text-align: center; padding: 30px 20px; }
+            footer .f-right { text-align: center; }
+        }
+        /* Stilizare specifică pentru titlul ANALIZA */
+            #raport-continut h3:nth-of-type(2),
+            #raport-continut h3:nth-of-type(3),
+            #raport-continut h3:nth-of-type(4) {
+            justify-content: center; 
+            font-size: 1.1rem; 
+            margin-top: 10px;
+            margin-bottom: 24px;
+        }
+
+        #raport-continut h3:nth-of-type(2)::before,
+        #raport-continut h3:nth-of-type(3)::before,
+        #raport-continut h3:nth-of-type(4)::before {
+            display: none;
+        }
+     
+        /* ── DISCLAIMER CARD ── */
+        .disclaimer-card {
+            background: rgba(255, 214, 0, 0.05); 
+            border: 1px solid rgba(255, 214, 0, 0.2); 
+            border-radius: 12px;
+            padding: 16px 24px;
+            margin-top: 24px; 
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+        .disclaimer-icon {
+            font-size: 1.2rem;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .disclaimer-card p {
+            font-family: var(--sans);
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        .disclaimer-card strong {
+            color: var(--status-warn); 
+        }
+        /* ── STILIZARE TABEL MARKDOWN ── */
+        #raport-continut table {
+            width: 100%; border-collapse: collapse; margin: 20px 0;
+            font-family: var(--mono); font-size: 0.8rem; color: var(--text-secondary);
+        }
+        #raport-continut th, #raport-continut td {
+            border: 1px solid var(--border); padding: 12px; text-align: left;
+        }
+        #raport-continut th {
+            background: var(--bg-card2); color: var(--accent-cyan);
+            font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+        }
+        #raport-continut tr:nth-child(even) {
+            background: rgba(79, 195, 247, 0.03);
+        }
+        /* ── BUTON ÎNAPOI ── */
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 40px; 
+        }
+
+        .btn-back {
+            display: inline-block;
+            padding: 12px 28px;
+            background: rgba(0, 229, 204, 0.1);
+            color: var(--accent-cyan);
+            border: 1px solid var(--accent-cyan);
+            border-radius: 8px;
+            text-decoration: none;
+            font-family: var(--mono);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 20;
+        }
+
+        .btn-back:hover {
+            background: var(--accent-cyan);
+            color: var(--bg-deep);
+            box-shadow: 0 0 15px rgba(0, 229, 204, 0.4);
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-inner">
+        <div class="header-logo-container">
+            <img src="../logo-oficial.png" alt="Logo Oficial ULBS Sibiu" class="header-official-logo">
+            <h1 class="header-farm-title">Ferma Didactică și de Cercetare Rusciori</h1>
+        </div>
+
+        <div class="live-badge">
+            <div class="live-dot"></div>
+            <span>Live · Rusciori</span>
+        </div>
+    </div>
+</header>
+
+<main>
+
+    <div class="status-panel" id="status-panel">
+        <div class="status-top">
+            <div>
+                <div id="status-text">Analiză date...</div>
+            </div>
+            <div class="status-icon-wrap" id="status-icon">🔄</div>
+        </div>
+        <div class="status-bar-strip"></div>
+    </div>
+
+    <div class="meta-row single-banner">
+        <div class="meta-card banner-text">
+            Raport de evaluare generat la <strong id="update-time" style="color: var(--accent-cyan);">—</strong>.
+        </div>
+    </div>
+
+    <div class="report-card">
+        <div class="report-card-header">
+            <h2>STRES EOLIAN</h2>
+            <span id="ts" style="display: none;"></span> 
+        </div>
+        <div class="report-body">
+            <div id="raport-continut">
+                <div class="loading-shimmer">
+                    <div class="shimmer-line"></div>
+                    <div class="shimmer-line"></div>
+                    <div class="shimmer-line"></div>
+                    <div class="shimmer-line"></div>
+                    <div class="shimmer-line"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px 24px; margin-top: 24px;">
+        <h3 style="text-align: left; margin-top: 0; font-family: var(--sans); font-size: 0.95rem; color: var(--text-primary);">Resurse Științifice</h3>
+        <ul style="list-style: none; padding-left: 0; margin-bottom: 0;">
+            <li style="margin-bottom: 8px;"><a href="https://doi.org/10.1016/S0304-4238(99)00114-1" target="_blank" rel="noopener noreferrer" style="color: var(--accent-blue); text-decoration: none; font-size: 0.85rem;">Rodrigo, J. (2000) - Spring frosts in deciduous fruit trees</a></li>
+        </ul>
+    </div>
+
+      <div class="disclaimer-card">
+        <div class="disclaimer-icon">⚠️</div>
+        <p><strong>Notă de informare:</strong> Tratați acest raport strict ca pe un mijloc de informare și luați în considerare că poate conține informații eronate din cauza 
+            fenomenului de halucinație al instrumentelor de Inteligență Artificială. Acest raport automatizat nu înlocuiește sub nicio formă decizia și expertiza unui
+            specialist agronom.</p>
+    </div>
+    <div class="btn-container">
+        <a href="../index.html" class="btn-back">← Înapoi la Dashboard</a>
+    </div>
+
+</main>
+
+<footer>
+    <div class="f-left">
+        © 2026 Asist. Univ. Dr. Ing. <strong style="color:var(--text-secondary)">Tiberiu Drăghici</strong><br>
+        Facultatea de Științe Agricole, Industrie Alimentară și Protecția Mediului<br>
+        Universitatea „Lucian Blaga" din Sibiu
+    </div>
+    <div class="f-right">
+        Academic Framework v3.1<br>
+        <span style="color: var(--accent-cyan); opacity:0.6;">AI-Powered Multi-Risk Agro-Intelligence</span>
+    </div>
+</footer>
+
+<script>
+/* ── Status logic ── */
+    function setStatus(statusText) {
+        const panel = document.getElementById('status-panel');
+        const statusElement = document.getElementById('status-text');
+        const statusIcon = document.getElementById('status-icon');
+
+        panel.className = 'status-panel';
+
+        if (!statusText) {
+            statusText = "DATE LIPSĂ";
+        }
+
+        const upperStatus = statusText.toUpperCase();
+
+        if (upperStatus.includes('RIDICAT') || upperStatus.includes('ALERTĂ')) {
+            panel.classList.add('st-alert');
+            statusElement.textContent = 'Alertă · Condiții Extreme';
+            statusIcon.textContent = '🔴';
+        } else if (upperStatus.includes('MODERAT') || upperStatus.includes('RISC')) {
+            panel.classList.add('st-warn');
+            statusElement.textContent = 'Risc Moderat · Atenție';
+            statusIcon.textContent = '🟡';
+        } else if (upperStatus.includes('INEXISTENT') || upperStatus.includes('SĂNĂTOS') || upperStatus.includes('OPTIM')) {
+            panel.classList.add('st-safe');
+            statusElement.textContent = 'Condiții Optime · Sigur';
+            statusIcon.textContent = '🟢';
+        } else {
+            panel.classList.add('st-warn');
+            statusElement.textContent = 'Detecție Activă';
+            statusIcon.textContent = '⚡';
+        }
+
+        /* Sync live-dot color */
+        const dot = document.querySelector('.live-dot');
+        if (panel.classList.contains('st-alert')) {
+            dot.style.background = 'var(--status-alert)';
+            dot.style.boxShadow  = '0 0 8px var(--status-alert)';
+        } else if (panel.classList.contains('st-warn')) {
+            dot.style.background = 'var(--status-warn)';
+            dot.style.boxShadow  = '0 0 8px var(--status-warn)';
+        } else {
+            dot.style.background = 'var(--status-safe)';
+            dot.style.boxShadow  = '0 0 8px var(--status-safe)';
+        }
+    }
+
+    /* ── Fetch report ── */
+        fetch('../raport.json?cache=' + Date.now())
+        .then(res => res.json())
+        .then(data => {
+            if(data.data_generare) {
+                document.getElementById('update-time').textContent = data.data_generare;
+                document.getElementById('ts').textContent = data.data_generare;
+            }
+
+            // ATENTIE AICI: Extragem strict datele pentru STRES EOLIAN
+            const dateSursa = data.stres_eolian;
+
+            if (dateSursa && dateSursa.continut) {
+                document.getElementById('raport-continut').innerHTML = marked.parse(dateSursa.continut);
+                setStatus(dateSursa.status);
+            } else {
+                 throw new Error("Date stres eolian lipsă în JSON");
+            }
+
+
+            /* Staggered fade-in for list items */
+            document.querySelectorAll('#raport-continut li').forEach((li, i) => {
+                li.style.opacity = '0';
+                li.style.transform = 'translateY(8px)';
+                li.style.transition = `opacity 0.35s ease ${i * 0.06}s, transform 0.35s ease ${i * 0.06}s`;
+                requestAnimationFrame(() => {
+                    li.style.opacity = '1';
+                    li.style.transform = 'translateY(0)';
+                });
+            });
+        })
+        .catch(() => {
+            document.getElementById('raport-continut').innerHTML =
+                `<p style="color:var(--status-alert); font-family:var(--mono); font-size:0.85rem;">
+                    ⚠ Eroare la preluarea datelor din sistem. Verificați conexiunea sau fișierul <code>raport.json</code>.
+                </p>`;
+            document.getElementById('status-panel').classList.add('st-alert');
+            document.getElementById('status-text').textContent = 'Eroare Sistem';
+            document.getElementById('status-icon').textContent = '❌';
+        });
+</script>
+</body>
+</html>

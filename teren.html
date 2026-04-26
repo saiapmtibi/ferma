@@ -489,7 +489,7 @@ async function aplicăAutentificareReușită(idToken, email) {
                 if (userInfo) {
                     userInfo.innerHTML = `<b style="color:#ff5252;">⛔ Acces refuzat: ${email}</b>
                         <br><small style="color:var(--text-muted); font-size:0.75rem; margin-top:4px; display:block;">
-                        ${result.message || "Adresa ta nu este în lista autorizată."}</small>
+                        ${result.message || "Adresa ta nu este autorizată."}</small>
                         <button onclick="location.reload()" style="margin-top:8px; background:none; border:1px solid #ff5252;
                         color:#ff5252; cursor:pointer; font-size:10px; padding:3px 8px; border-radius:4px;">Încearcă alt cont</button>`;
                 }

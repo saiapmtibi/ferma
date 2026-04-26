@@ -921,6 +921,15 @@ async function trimiteDate() {
         box.classList.add(clasa);
         box.innerText = mesaj;
     }
+	
+	document.getElementById('opSelect').addEventListener('change', () => { 
+    const box = document.getElementById('statusBox');
+    if (box) box.style.display = 'none'; 
+});
+document.getElementById('catSelect').addEventListener('change', () => { 
+    const box = document.getElementById('statusBox');
+    if (box) box.style.display = 'none'; 
+});
 </script>
 
 </body>

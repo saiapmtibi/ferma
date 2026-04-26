@@ -3,15 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Validare Teren | ULBS Sibiu</title>
+    <meta name="description" content="Modul Ground-Truth și Calibrare — Ferma Didactică Rusciori, ULBS Sibiu. Validare imagistică și registru agrotehnic.">
+    <meta http-equiv="Content-Security-Policy"
+      content="default-src 'self';
+               script-src 'self' https://accounts.google.com https://apis.google.com 'unsafe-inline';
+               style-src 'self' https://fonts.googleapis.com https://accounts.google.com 'unsafe-inline';
+               font-src https://fonts.gstatic.com;
+               img-src 'self' data: https:;
+               connect-src 'self' https://accounts.google.com https://oauth2.googleapis.com https://script.google.com https://script.googleusercontent.com;
+               frame-src https://accounts.google.com;">
+
+    <title>Validare Teren | Ferma AI</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://accounts.google.com/gsi/client" defer></script>
 
     <style>
         :root {
             --bg-deep:       #080d14;
             --bg-card:       #111c2b;
+            --bg-card2:      #162236;
             --border:        rgba(99, 179, 237, 0.12);
             --text-primary:  #e8f4fd;
             --text-secondary:#7fa8c9;
@@ -33,6 +45,7 @@
             overflow-x: hidden;
         }
 
+        /* ── GRID TEXTURE ── */
         body::before {
             content: ''; position: fixed; inset: 0;
             background-image: linear-gradient(rgba(79,195,247,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(79,195,247,0.025) 1px, transparent 1px);
@@ -45,6 +58,7 @@
             pointer-events: none; z-index: 0;
         }
 
+        /* ── HEADER ── */
         header {
             position: relative; z-index: 10; padding: 0 40px;
             border-bottom: 1px solid var(--border);
@@ -61,74 +75,198 @@
         }
 
         .header-official-logo { height: 55px; width: auto; display: block; }
-        .header-farm-title { font-weight: 600; font-size: 1.1rem; color: var(--text-primary); text-align: center; }
 
+        .header-farm-title {
+            font-family: var(--sans); font-weight: 600; font-size: 1.1rem;
+            color: var(--text-primary); line-height: 1.2; text-align: center; letter-spacing: -0.5px;
+        }
+
+        /* ── MAIN ── */
         main {
             position: relative; z-index: 10; max-width: 1100px; margin: 0 auto;
-            padding: 80px 40px; flex-grow: 1; display: flex; justify-content: center; align-items: center;
+            padding: 60px 40px 80px; flex-grow: 1; width: 100%;
         }
 
-        .wip-card {
-            background: var(--bg-card);
-            border: 1px dashed var(--accent-cyan);
-            border-radius: 16px;
-            padding: 60px 40px;
-            text-align: center;
-            max-width: 600px;
-            box-shadow: 0 10px 30px rgba(0, 229, 204, 0.1);
+        .top-actions {
+            display: flex; justify-content: flex-start; margin-bottom: 20px;
         }
-
-        .wip-icon { font-size: 3.5rem; margin-bottom: 24px; }
-        .wip-title { font-size: 1.6rem; font-weight: 600; color: var(--text-primary); margin-bottom: 16px; letter-spacing: 1px; }
-        .wip-text { font-size: 1rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: 36px; }
 
         .btn-back {
-            display: inline-block;
-            padding: 12px 28px;
-            background: rgba(0, 229, 204, 0.1);
-            color: var(--accent-cyan);
-            border: 1px solid var(--accent-cyan);
-            border-radius: 8px;
-            text-decoration: none;
-            font-family: var(--mono);
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            transition: all 0.3s ease;
+            display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border);
+            border-radius: 8px; color: var(--text-secondary); font-family: var(--mono);
+            font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;
+            text-decoration: none; transition: all 0.3s ease;
         }
 
         .btn-back:hover {
-            background: var(--accent-cyan);
-            color: var(--bg-deep);
-            box-shadow: 0 0 15px rgba(0, 229, 204, 0.4);
+            background: rgba(0, 229, 204, 0.1); border-color: var(--accent-cyan);
+            color: var(--accent-cyan); transform: translateX(-3px);
+            box-shadow: 0 0 15px rgba(0, 229, 204, 0.2);
         }
 
-        footer {
-            position: relative; z-index: 10; max-width: 1100px;
-            margin: 0 auto; padding: 40px;
+        /* ── INTERACTIVE SECTION (FORM) ── */
+        .interactive-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 40px 50px;
+            margin-bottom: 40px;
+        }
+
+        .page-title {
+            font-size: 2rem; color: var(--accent-cyan); margin-bottom: 10px; font-weight: 700;
+            text-align: center;
+        }
+
+        .intro-text {
+            font-size: 1.05rem; color: var(--text-secondary); margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .form-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex; flex-direction: column; text-align: left; width: 100%;
+        }
+
+        .form-group.full-width { grid-column: 1 / -1; }
+
+        /* [MOD D] Label-urile au acum atribut 'for' asociat la input-uri (în HTML).
+           Stilul rămâne identic. */
+        .form-group label {
+            font-family: var(--mono); font-size: 0.75rem; color: var(--accent-cyan);
+            text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;
+            cursor: pointer; /* indică utilizatorului că label-ul este clickable */
+        }
+
+        select, input[type="text"], input[type="number"], input[type="date"] {
+            appearance: none;
+            background: rgba(8, 13, 20, 0.8);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            font-family: var(--sans);
+            font-size: 1rem;
+            padding: 14px 20px;
+            border-radius: 8px;
+            outline: none;
+            transition: all 0.3s ease;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        select {
+            cursor: pointer;
+            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2300e5cc%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+            background-repeat: no-repeat; background-position: right 15px top 50%; background-size: 12px auto;
+        }
+
+        input[type="file"] {
+            width: 100%; padding: 12px; background: rgba(8, 13, 20, 0.8);
+            color: var(--text-secondary); border: 1px dashed var(--accent-cyan);
+            border-radius: 8px; cursor: pointer; font-family: var(--sans); box-sizing: border-box;
+        }
+
+        select:hover, input:hover { border-color: var(--accent-cyan); }
+        select:focus, input:focus { border-color: var(--accent-cyan); box-shadow: 0 0 10px rgba(0, 229, 204, 0.2); }
+        select:disabled { opacity: 0.5; cursor: not-allowed; border-color: var(--border); background-image: none; }
+
+        .btn-submit {
+            width: 100%; padding: 16px; background-color: var(--accent-cyan); color: var(--bg-deep);
+            border: none; border-radius: 8px; font-family: var(--mono); font-weight: 700;
+            font-size: 1rem; cursor: pointer; margin-top: 20px; transition: all 0.3s ease; text-transform: uppercase;
+        }
+
+        .btn-submit:hover { opacity: 0.9; box-shadow: 0 0 15px rgba(0, 229, 204, 0.4); transform: translateY(-2px); }
+        .btn-submit:disabled { background-color: var(--text-muted); cursor: not-allowed; color: var(--bg-card); box-shadow: none; transform: none; }
+
+        #statusBox {
+            margin-top: 25px; padding: 15px 20px; border-radius: 8px; text-align: center;
+            font-family: var(--mono); font-size: 0.9rem; display: none;
+        }
+
+        .status-success { background-color: rgba(0, 230, 118, 0.1); color: #00e676; border: 1px solid #00e676; }
+        .status-error { background-color: rgba(255, 82, 82, 0.1); color: #ff5252; border: 1px solid #ff5252; }
+        .status-loading { background-color: rgba(0, 229, 204, 0.1); color: var(--accent-cyan); border: 1px dashed var(--accent-cyan); }
+
+        #userInfo { margin-top: 10px; font-family: var(--mono); color: #00e676; display: none; }
+        .login-wrapper { display: flex; flex-direction: column; align-items: flex-start; }
+        .login-divider {
+            border: none;
             border-top: 1px solid var(--border);
+            margin: 25px 0 5px;
+        }
+	.intro-box p {
+    	    margin-bottom: 15px;
+	}
+	.intro-box strong {
+	    color: var(--accent-cyan);
+	}
+
+        /* ── FOOTER ── */
+        footer {
+            position: relative; z-index: 10; max-width: 1100px; width: 100%; margin: 0 auto;
+            padding: 40px; border-top: 1px solid var(--border);
             display: flex; align-items: center; justify-content: space-between;
         }
 
-        footer .f-left {
-            font-family: var(--mono); font-size: 0.68rem;
-            color: var(--text-muted); line-height: 1.8;
-        }
+        footer .f-left { font-family: var(--mono); font-size: 0.68rem; color: var(--text-muted); line-height: 1.8; }
+        footer .f-right { font-family: var(--mono); font-size: 0.68rem; color: var(--text-muted); text-align: right; }
 
-        footer .f-right {
-            font-family: var(--mono); font-size: 0.68rem;
-            color: var(--text-muted); text-align: right;
-        }
-
-        @media (max-width: 680px) {
-            header { padding: 0 20px; }
-            .header-inner { flex-direction: column; gap: 10px; }
+        @media (max-width: 768px) {
             .header-official-logo { height: 40px; }
-            .header-farm-title { font-size: 0.85rem; max-width: 200px; }
-            main { padding: 40px 20px; }
-            footer { flex-direction: column; gap: 20px; text-align: center; padding: 30px 20px; }
+            .header-farm-title { font-size: 0.85rem; max-width: 250px; }
+            .header-inner { flex-direction: column; gap: 10px; }
+            main { padding: 30px 20px 60px; }
+            .interactive-section { padding: 30px 20px; }
+            .form-grid { grid-template-columns: 1fr; }
+            footer { flex-direction: column; gap: 20px; text-align: center; }
             footer .f-right { text-align: center; }
         }
+	/* ── HEADER AUTH (login mutat în header) ── */
+        .header-auth {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 8px;
+        }
+
+        #userInfo {
+            margin-top: 0;
+            text-align: right;
+            font-size: 0.78rem;
+        }
+
+        /* ── BOTTOM ACTIONS (buton back jos, centrat) ── */
+        .bottom-actions {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            padding: 0 40px 40px;
+            max-width: 1100px;
+            width: 100%;
+            margin: 0 auto;
+        }
+       
+        @media (max-width: 768px) {
+            .header-auth { align-items: center; }
+            #userInfo { text-align: center; }
+            .bottom-actions { padding: 0 20px 30px; }
+        }
+.autocomplete-wrapper { position: relative; }
+.autocomplete-list {
+    position: absolute; top: 100%; left: 0; right: 0;
+    background: #1e1e1e; border: 1px solid var(--border); z-index: 1000;
+    max-height: 200px; overflow-y: auto; display: none; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+.autocomplete-list div {
+    padding: 10px; cursor: pointer; border-bottom: 1px solid #333; color: #fff; font-size: 14px;
+}
+.autocomplete-list div:hover { background: var(--accent-cyan); color: #000; }
+
     </style>
 </head>
 <body>
@@ -137,21 +275,72 @@
     <div class="header-inner">
         <div class="header-logo-container">
             <img src="logo-oficial.png" alt="Logo Oficial ULBS Sibiu" class="header-official-logo">
-            <h1 class="header-farm-title">Ferma Didactică și de Cercetare</h1>
+            <p class="header-farm-title">Ferma Didactică și de Cercetare Rusciori</p>
+        </div>
+	 <div class="header-auth">
+            <div id="userInfo" style="font-size:0.78rem; text-align:right;"></div>
         </div>
     </div>
 </header>
 
 <main>
-    <div class="wip-card">
-        <div class="wip-icon">🚧</div>
-        <h2 class="wip-title">MODUL ÎN DEZVOLTARE</h2>
-        <p class="wip-text">
-            Modulul de <strong>Validare Teren & Teledetecție</strong> este momentan în faza de asamblare a datelor. Această secțiune va integra în curând imagini din dronă (NDVI), imagistică in-situ și registrul electronic (tratamente și irigații) pentru a asigura calibrarea modelelor AI cu realitatea obiectivă din teren (Ground-Truth).
-        </p>
-        <a href="index.html" class="btn-back">← Înapoi la Dashboard</a>
+
+    <div class="interactive-section">
+        <h2 class="page-title">Modul de achiziție date Ground-Truth</h2>
+
+	<div class="intro-box" style="text-align: center; max-width: 800px; margin: 0 auto 40px; color: var(--text-secondary); line-height: 1.6;">
+    	   <p style="margin-bottom: 15px;">
+            Acest modul este dedicat colectării observațiilor primare de teren (<strong>Ground-Truth</strong>) necesare pentru calibrarea și validarea modelelor de inteligență artificiale ale Platformei de Predicție Multi-Risc.
+    	   </p>
+    	   <p style="font-size: 0.9rem; border-left: 3px solid var(--accent-cyan); padding-left: 15px; background: rgba(0, 229, 204, 0.05); padding-top: 10px; padding-bottom: 10px;">
+           <strong>Notă:</strong> Pentru a garanta integritatea datelor științifice, accesul este restricționat. Introducerea informațiilor în sistem necesită <strong>autorizare instituțională</strong> prealabilă.
+    	   </p>
+	</div>
+
+<div id="auth-container" style="text-align: center; margin-bottom: 20px;">
+    <div id="g_id_button" style="display: inline-block;"></div>
+    <input type="hidden" id="userIdToken" value="">
+</div>
+
+<hr class="login-divider">
+
+<div id="app-content" style="display: none;"> 
+    <div class="form-grid">
+        <div class="form-group">
+            <label for="opSelect">1. Alegeți Operațiunea</label>
+            <select id="opSelect">
+                <option value="" disabled selected hidden>-- Selectați --</option>
+                <option value="imagistica">Determinare imagistică teren</option>
+                <option value="registru">Registru Agrotehnic</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="mainDate">2. Data efectuării</label>
+            <input type="date" id="mainDate">
+        </div>
+
+        <div class="form-group full-width">
+            <label for="catSelect">3. Alegeți Categoria / Lucrarea</label>
+            <select id="catSelect" disabled>
+                <option value="">-- Mai întâi alegeți operațiunea --</option>
+            </select>
+        </div>
     </div>
+
+    <div id="dynamicFields"></div>
+
+    <button id="btnSubmit" class="btn-submit" style="display: none; margin-top: 30px;" onclick="trimiteDate()">
+        Transmite în Cloud
+    </button>
+    
+    <div id="statusBox" style="margin-top: 20px;"></div>
+</div>
+</div>
 </main>
+<div class="bottom-actions">
+    <a href="index.html" class="btn-back" rel="noopener noreferrer">← Înapoi la Dashboard</a>
+</div>
 
 <footer>
     <div class="f-left">
@@ -164,6 +353,575 @@
         <span style="color: var(--accent-cyan); opacity:0.6;">AI-Powered Multi-Risk Agro-Intelligence</span>
     </div>
 </footer>
+
+
+<script>
+// ═══════════════════════════════════════════════════════════════════════════════
+// CONFIGURARE SECURITATE & AUTENTIFICARE
+// ═══════════════════════════════════════════════════════════════════════════════
+    const GOOGLE_CLIENT_ID = "45328311754-usbec4sjfq2eqam0putrh21ds569lqk5.apps.googleusercontent.com";
+    const GOOGLE_SCRIPT_IMAGISTICA ="https://script.google.com/macros/s/AKfycbze4SUW01GXL5g1IKTmT5aBLdES2PqvBN1_N6St6qULeDVDdRhy4BOLwOe1ygzbNmtQuw/exec";
+                                    
+    
+    const DOMENIU_AUTORIZAT = "ulbsibiu.ro";
+    let esteAutentificat = false;
+    let catalogProduse = {}; 
+
+    async function incarcaNomenclator() {
+    console.log("Pornesc descărcarea catalogului...");
+    try {
+        const response = await fetch(GOOGLE_SCRIPT_IMAGISTICA + "?action=catalog");
+        catalogProduse = await response.json();
+
+        if (Object.keys(catalogProduse).length === 0) {
+            console.error("⚠️ ATENȚIE: Catalogul este GOL! Verifică Excel-ul.");
+        } else {
+            console.log("✅ Catalog încărcat cu succes:", Object.keys(catalogProduse).length, "produse.");
+        }
+    } catch (error) {
+        console.error("❌ Eroare la descărcare catalog:", error);
+    }
+}
+    
+// ───────────────────────────────────────────────────────────────────────────────
+//  INIȚIALIZARE LA ÎNCĂRCAREA PAGINII
+// ───────────────────────────────────────────────────────────────────────────────
+
+    window.onload = function () {
+        if (typeof google !== 'undefined') {
+            google.accounts.id.initialize({
+                client_id: GOOGLE_CLIENT_ID,
+                callback: handleCredentialResponse,
+                auto_select: true,
+                cancel_on_tap_outside: false,
+                use_fedcm_for_prompt: false
+            });
+
+            google.accounts.id.renderButton(
+                document.getElementById("g_id_button"),
+                { theme: "outline", size: "large", type: "standard" }
+            );
+            google.accounts.id.prompt();
+        }
+    };
+
+// ───────────────────────────────────────────────────────────────────────────────
+//  DECODARE JWT (DOAR PENTRU AFIȘARE — NU ESTE VERIFICARE DE SECURITATE)
+// ───────────────────────────────────────────────────────────────────────────────
+
+    function decodeJwtResponse(token) {
+        var base64Url = token.split('.')[1];
+        var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+        return JSON.parse(jsonPayload);
+    }
+
+// ───────────────────────────────────────────────────────────────────────────────
+//  CALLBACK AUTENTIFICARE GOOGLE
+// ───────────────────────────────────────────────────────────────────────────────
+
+    function handleCredentialResponse(response) {
+        const idToken = response.credential;
+        const payload = decodeJwtResponse(idToken);
+        const userEmail = payload.email;
+        const domeniu = userEmail.split('@')[1];
+        esteAutentificat = false;
+        document.getElementById('userIdToken').value = "";
+
+        const userInfo = document.getElementById('userInfo');
+        const authBtn  = document.getElementById('g_id_button');
+
+        if (authBtn)  authBtn.style.display  = 'none';
+        if (userInfo) userInfo.style.display = 'block';
+
+        if (domeniu !== DOMENIU_AUTORIZAT && !userEmail.endsWith('@gmail.com')) {
+            // Respingem vizual conturile cu domeniu complet neautorizat (ex: @yahoo.ro)
+            userInfo.innerHTML = `<b style="color: #ff5252;">⚠ Cont neautorizat: ${userEmail}</b>
+                                  <br><small style="color:var(--text-muted); font-size:0.75rem; margin-top:4px; display:block;">
+                                  Sunt acceptate conturile @${DOMENIU_AUTORIZAT} și adrese externe aprobate individual.</small>
+                                  <button onclick="location.reload()" style="margin-top:8px; background:none; border:1px solid #ff5252; color:#ff5252; cursor:pointer; font-size:10px; padding:3px 8px; border-radius:4px;">
+                                  Încearcă alt cont</button>`;
+            document.getElementById('app-content').style.display = 'none';
+            return;
+        }
+        aplicăAutentificareReușită(idToken, userEmail);
+    }
+
+// ───────────────────────────────────────────────────────────────────────────────
+//  APLICARE STARE AUTENTIFICATĂ
+// ───────────────────────────────────────────────────────────────────────────────
+
+async function aplicăAutentificareReușită(idToken, email) {
+        const userInfo = document.getElementById('userInfo');
+        if (userInfo) {
+            userInfo.style.display = 'block';
+            userInfo.innerHTML = `<span style="color:var(--accent-cyan); font-size:0.85rem;">⏳ Se verifică autorizarea pentru <b>${email}</b>...</span>`;
+        }
+        try {
+            const response = await fetch(
+                GOOGLE_SCRIPT_IMAGISTICA + "?id_token=" + encodeURIComponent(idToken),
+                { method: "GET", redirect: "follow" }
+            );
+            const result = await response.json();
+
+            if (result.authorized) {
+                esteAutentificat = true;
+                document.getElementById('userIdToken').value = idToken;
+                const gBtn = document.getElementById('g_id_button');
+                if (gBtn) gBtn.style.display = 'none';
+                if (userInfo) {
+                    userInfo.innerHTML = `✓ Acces autorizat: <b style="color:#00e676;">${result.email}</b>
+                        <button onclick="logout()" style="margin-left:10px; background:none; border:1px solid var(--accent-cyan);
+                        color:var(--accent-cyan); cursor:pointer; font-size:10px; padding:2px 6px; border-radius:4px;">Logout</button>`;
+                }
+                document.getElementById('app-content').style.display = 'block';
+                if (typeof verificaAfisareButon === 'function') verificaAfisareButon();                
+                incarcaNomenclator();
+
+            } else {
+                esteAutentificat = false;
+                document.getElementById('userIdToken').value = "";
+                document.getElementById('app-content').style.display = 'none';
+                const authBtn = document.getElementById('g_id_button');
+                if (authBtn) authBtn.style.display = 'block';
+                if (userInfo) {
+                    userInfo.innerHTML = `<b style="color:#ff5252;">⛔ Acces refuzat: ${email}</b>
+                        <br><small style="color:var(--text-muted); font-size:0.75rem; margin-top:4px; display:block;">
+                        ${result.message || "Adresa ta nu este în lista autorizată."}</small>
+                        <button onclick="location.reload()" style="margin-top:8px; background:none; border:1px solid #ff5252;
+                        color:#ff5252; cursor:pointer; font-size:10px; padding:3px 8px; border-radius:4px;">Încearcă alt cont</button>`;
+                }
+            }
+        } catch (err) {
+            esteAutentificat = false;
+            if (userInfo) {
+                userInfo.innerHTML = `<b style="color:#ff5252;">⚠ Eroare la verificarea autorizării. Reîncarcă pagina.</b>`;
+            }
+            console.error("Eroare verificare autorizare:", err);
+        }
+    }
+
+// ───────────────────────────────────────────────────────────────────────────────
+//  LOGOUT
+// ───────────────────────────────────────────────────────────────────────────────
+
+    function logout() {
+        if (typeof google !== 'undefined') {
+            google.accounts.id.disableAutoSelect();
+        }
+        esteAutentificat = false;
+        document.getElementById('userIdToken').value = "";
+        location.reload();
+    }
+
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// STRUCTURA DATELOR
+// ═══════════════════════════════════════════════════════════════════════════════
+
+    const optiuniLista2 = {
+        imagistica: [
+            {val: '', text: '-- Alege Categorie --', disabled: true, selected: true},
+            {val: 'Foliaj', text: 'Foliaj (vigoare / simptome)'},
+            {val: 'Fructe', text: 'Fructe (dezvoltare / leziuni)'},
+            {val: 'Ramuri', text: 'Ramuri'},
+            {val: 'Capcane', text: 'Capcane entomologice'},
+            {val: 'Sol', text: 'Sol'},
+            {val: 'Ansamblu', text: 'Imagine de ansamblu'},
+            {val: 'Ortofotoplan', text: 'Ortofotoplan'}
+        ],
+        registru: [
+            {val: '', text: '-- Alege Lucrarea --', disabled: true, selected: true},
+            {val: 'Irigare', text: 'A. Irigare'},
+            {val: 'Tratament Fitosanitar', text: 'B. Tratament Fitosanitar'},
+            {val: 'Fertilizare', text: 'C. Fertilizare / Amendare'}
+        ]
+    };
+   const sabloaneCampuri = {
+        imagistica: `
+            <div class="form-group full-width">
+                <label for="inpFoto">Upload Imagine</label>
+                <input type="file" id="inpFoto" accept="image/*">
+            </div>
+            <div class="form-group full-width">
+                <label for="inpObs">Observații</label>
+                <input type="text" class="p-nume" list="listaNomenclator" oninput="autoCompleteaza(this)" placeholder="ex: Captan 80 WDG" autocomplete="off">
+            </div>
+        `,
+        irigare: `
+            <div class="form-grid full-width">
+                <div class="form-group">
+                    <label for="inpNorma">Norma de udare (m³/ha)</label>
+                    <input type="number" id="inpNorma" placeholder="ex: 150" min="0">
+                </div>
+                <div class="form-group">
+                    <label for="inpObs">Observații Irigare</label>
+                    <input type="text" id="inpObs" placeholder="Adaugă detalii" autocomplete="off">
+                </div>
+            </div>
+        `,
+        tratament: `
+            <div id="listaProduse" class="full-width"></div>
+            
+            <div class="form-group full-width" style="margin-top: 10px;">
+                <button type="button" onclick="adaugaProdus()" class="btn-submit" style="background: transparent; border: 1px dashed var(--accent-cyan); color: var(--accent-cyan); margin-top: 0;">
+                    + Adaugă Produs în Rețetă
+                </button>
+            </div>
+            
+            <div class="form-group full-width" style="margin-top:20px;">
+                <label for="inpObs">Observații Generale Tratament</label>
+                <input type="text" id="inpObs" placeholder="Ex: Condiții meteo, stadiu fenologic..." autocomplete="off">
+            </div>
+        `,
+        fertilizare: `
+            <div class="form-grid full-width">
+                <div class="form-group">
+                    <label for="inpProdus">Denumire produs</label>
+                    <input type="text" id="inpProdus" placeholder="ex: NPK 20-20-20" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="inpSubstanta">Substanța activă</label>
+                    <input type="text" id="inpSubstanta" placeholder="ex: Azot, Fosfor, Potasiu" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="inpDozaFert">Doză</label>
+                    <input type="text" id="inpDozaFert" placeholder="ex: 50 kg/ha" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="inpObs">Observații</label>
+                    <input type="text" id="inpObs" placeholder="Adaugă detalii" autocomplete="off">
+                </div>
+            </div>
+        `
+    };
+    let produsIdCounter = 0; 
+
+    function adaugaProdus() {
+    const container = document.getElementById('listaProduse');
+    if (!container) return;
+
+    produsIdCounter++;
+    const productCard = document.createElement('div');
+    productCard.className = 'interactive-section'; 
+    productCard.id = `product_${produsIdCounter}`;
+    productCard.style.padding = '20px';
+    productCard.style.marginTop = '15px';
+    productCard.style.background = 'rgba(255, 255, 255, 0.02)';
+
+    productCard.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; border-bottom:1px solid var(--border); padding-bottom:10px;">
+            <span class="titlu-produs" style="color:var(--accent-cyan);">📦 PRODUS</span>
+            <button type="button" onclick="stergeProdus(${produsIdCounter})" style="background:none; border:none; color:#ff5252; cursor:pointer;">✕ Șterge</button>
+        </div>
+        <div class="form-grid">
+            <div class="form-group">
+                <label>Tip produs</label>
+                <select class="p-tip">
+                    <option value="">-- Selectați --</option>
+                    <option value="Erbicid">Erbicid</option>
+                    <option value="Fungicid">Fungicid</option>
+                    <option value="Insecticid">Insecticid</option>
+                    <option value="Adjuvant">Adjuvant</option>
+                </select>
+            </div>
+            <div class="form-group autocomplete-wrapper">
+                <label>Nume Produs</label>
+                <input type="text" class="p-nume" oninput="filtreazaSugestii(this, ${produsIdCounter})" placeholder="Scrieți pentru sugestii..." autocomplete="off">
+                <div class="autocomplete-list" id="sugestii_${produsIdCounter}"></div>
+            </div>
+            <div class="form-group">
+                <label>Substanța activă</label>
+                <input type="text" class="p-subst">
+            </div>
+            <div class="form-group">
+                <label>Agent dăunător vizat</label>
+                <input type="text" class="p-ag-daunator">
+            </div>
+            <div class="form-group">
+                <label>Momentul aplicării</label>
+                <input type="text" class="p-moment">
+            </div>
+            <div class="form-group">
+                <label>Mod de acțiune</label>
+                <input type="text" class="p-mod-actiune">
+            </div>
+            <div class="form-group">
+                <label>Doză</label>
+                <input type="text" class="p-doza">
+            </div>
+            <div class="form-group">
+                <label>UM Doză</label>
+                <input type="text" class="p-um">
+            </div>
+            <div class="form-group">
+                <label>Remanență (zile)</label>
+                <input type="text" class="p-remanenta">
+            </div>
+        </div>
+    `;
+    container.appendChild(productCard);
+}
+// Logica noului dropdown custom
+function filtreazaSugestii(input, id) {
+    const list = document.getElementById(`sugestii_${id}`);
+    const val = input.value.toLowerCase();
+    list.innerHTML = '';
+    
+    if (!val) { list.style.display = 'none'; return; }
+
+    const matches = Object.keys(catalogProduse).filter(p => p.toLowerCase().includes(val));
+    if (matches.length === 0) { list.style.display = 'none'; return; }
+
+    matches.forEach(match => {
+        const div = document.createElement('div');
+        div.innerText = match;
+        div.onclick = function() {
+            input.value = match;
+            list.style.display = 'none';
+            autoCompleteaza(input);
+        };
+        list.appendChild(div);
+    });
+    list.style.display = 'block';
+}
+
+function autoCompleteaza(input) {
+    const nume = input.value.trim();
+    const detalii = catalogProduse[nume];
+    
+    if (detalii) {
+        const card = input.closest('.form-grid');
+        if(detalii.tip) card.querySelector('.p-tip').value = detalii.tip;
+        card.querySelector('.p-subst').value = detalii.substanta || "";
+        card.querySelector('.p-ag-daunator').value = detalii.ag_daunator || "";
+        card.querySelector('.p-moment').value = detalii.moment || "";
+        card.querySelector('.p-mod-actiune').value = detalii.mod_actiune || "";
+        card.querySelector('.p-doza').value = detalii.doza || "";
+        card.querySelector('.p-um').value = detalii.um || "";
+        card.querySelector('.p-remanenta').value = detalii.remanenta || "";
+    }
+}
+
+// Ascunde dropdown-urile dacă dai click în afara lor
+document.addEventListener('click', function(e) {
+    if (!e.target.classList.contains('p-nume')) {
+        document.querySelectorAll('.autocomplete-list').forEach(l => l.style.display = 'none');
+    }
+});
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// LOGICA INTERFEȚEI
+// ═══════════════════════════════════════════════════════════════════════════════
+
+    const opSelect      = document.getElementById('opSelect');
+    const catSelect     = document.getElementById('catSelect');
+    const dynamicFields = document.getElementById('dynamicFields');
+    const btnSubmit     = document.getElementById('btnSubmit');
+    
+    
+    function stergeProdus(id) {
+        const row = document.getElementById(`product_${id}`);
+        if (row) {
+            row.remove();
+            actualizeazaNumereProduse();
+        }
+    }
+
+    function actualizeazaNumereProduse() {
+        const carduri = document.querySelectorAll('#listaProduse > div');
+        carduri.forEach((card, index) => {
+            const titlu = card.querySelector('.titlu-produs');
+            if (titlu) titlu.innerText = `📦 PRODUS #${index + 1}`;
+        });
+    }
+
+
+
+    function verificaAfisareButon() {
+        if (esteAutentificat && opSelect.value && catSelect.value && catSelect.value !== "") {
+            btnSubmit.style.display = 'block';
+        } else {
+            btnSubmit.style.display = 'none';
+        }
+    }
+// La încărcare, pune data de azi
+document.getElementById('mainDate').valueAsDate = new Date();
+
+// Când se schimbă Operațiunea (1) -> populăm Categoria (3)
+opSelect.addEventListener('change', function() {
+    const op = this.value;
+    catSelect.innerHTML = '';
+    dynamicFields.innerHTML = '';
+    
+    if (op) {
+        catSelect.disabled = false;
+        // Adăugăm opțiunile specifice (imagistica sau registru)
+        optiuniLista2[op].forEach(opt => {
+            const el = document.createElement('option');
+            el.value = opt.val;
+            el.textContent = opt.text;
+            catSelect.appendChild(el);
+        });
+    }
+    verificaAfisareButon();
+});
+
+// Când se schimbă Categoria (3) -> generăm câmpurile (4)
+catSelect.addEventListener('change', function() {
+    const cat = this.value;
+    if (cat === 'Tratament Fitosanitar') {
+        dynamicFields.innerHTML = sabloaneCampuri.tratament;
+        // Resetăm contorul de produse și adăugăm primul produs automat
+        produsIdCounter = 0;
+        adaugaProdus(); 
+    } else if (cat === 'Irigare') {
+        dynamicFields.innerHTML = sabloaneCampuri.irigare;
+    } else if (cat === 'Fertilizare') {
+        dynamicFields.innerHTML = sabloaneCampuri.fertilizare;
+    } else {
+        // Toate categoriile din modulul Imagistică
+        dynamicFields.innerHTML = sabloaneCampuri.imagistica;
+    }
+    verificaAfisareButon();
+});
+   
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// LOGICA DE TRANSMITERE
+// ═══════════════════════════════════════════════════════════════════════════════
+
+async function trimiteDate() {
+    const idToken = document.getElementById('userIdToken').value;
+
+    if (!esteAutentificat || !idToken) {
+        afiseazaStatus("⚠ Sesiunea a expirat sau nu ești autentificat. Pagina se va reîncărca...", "status-error");
+        setTimeout(() => location.reload(), 2500);
+        return;
+    }
+
+    const operatiune = document.getElementById('opSelect').value;
+    const categorie  = document.getElementById('catSelect').value;
+    const dataEfectuarii = document.getElementById('mainDate') ? document.getElementById('mainDate').value : "";
+
+    afiseazaStatus("Se procesează datele...", "status-loading");
+    btnSubmit.disabled = true;
+
+    let payload = {
+        id_token:    idToken,       
+        operatiune:  operatiune,
+        categorie:   categorie,
+        data:        dataEfectuarii,
+        observatii:  document.getElementById('inpObs') ? document.getElementById('inpObs').value.trim() : ""
+    };
+
+    if (operatiune === 'imagistica') {
+        const fileInput = document.getElementById('inpFoto');
+        if (fileInput && fileInput.files.length > 0) {
+            const MAX_SIZE_MB = 5;
+            if (fileInput.files[0].size > MAX_SIZE_MB * 1024 * 1024) {
+                afiseazaStatus(`Imaginea depășește ${MAX_SIZE_MB}MB. Te rugăm să comprimi fișierul.`, "status-error");
+                btnSubmit.disabled = false;
+                return;
+            }
+            afiseazaStatus("Se convertește imaginea...", "status-loading");
+            payload.image = await toBase64(fileInput.files[0]);
+        } else {
+            afiseazaStatus("Eroare: Trebuie să selectezi o imagine!", "status-error");
+            btnSubmit.disabled = false;
+            return;
+        }
+    } 
+    else if (operatiune === 'registru') {
+        if (categorie === 'Tratament Fitosanitar') {
+            payload.produse = [];
+            const carduri = document.querySelectorAll('#listaProduse > div');
+            
+            carduri.forEach(card => {
+                payload.produse.push({
+                    tip: card.querySelector('.p-tip') ? card.querySelector('.p-tip').value : "",
+                    nume: card.querySelector('.p-nume') ? card.querySelector('.p-nume').value : "",
+                    substanta: card.querySelector('.p-subst') ? card.querySelector('.p-subst').value : "",
+                    ag_daunator: card.querySelector('.p-ag-daunator') ? card.querySelector('.p-ag-daunator').value : "",
+                    moment: card.querySelector('.p-moment') ? card.querySelector('.p-moment').value : "",
+                    mod_actiune: card.querySelector('.p-mod-actiune') ? card.querySelector('.p-mod-actiune').value : "",
+                    doza: card.querySelector('.p-doza') ? card.querySelector('.p-doza').value : "",
+                    um: card.querySelector('.p-um') ? card.querySelector('.p-um').value : "",
+                    remanenta: card.querySelector('.p-remanenta') ? card.querySelector('.p-remanenta').value : ""
+                });
+            });
+
+            // Mutat în interiorul logicii specifice tratamentelor fitosanitare
+            if (payload.produse.length === 0) {
+                afiseazaStatus("Eroare: Trebuie să adaugi cel puțin un produs în rețetă!", "status-error");
+                btnSubmit.disabled = false;
+                return;
+            }
+        }
+        else if (categorie === 'Irigare') {
+            payload.normaUdare = document.getElementById('inpNorma') ? document.getElementById('inpNorma').value : "";
+        } 
+        else if (categorie === 'Fertilizare') {
+            payload.produsComercial = document.getElementById('inpProdus') ? document.getElementById('inpProdus').value : "";
+            payload.substantaActiva = document.getElementById('inpSubstanta') ? document.getElementById('inpSubstanta').value : "";
+            payload.dozaFert = document.getElementById('inpDozaFert') ? document.getElementById('inpDozaFert').value : "";
+        }
+    }
+
+    afiseazaStatus("Se trimite către Google Cloud...", "status-loading");
+
+    try {
+        const response = await fetch(GOOGLE_SCRIPT_IMAGISTICA, {
+            method:   "POST",
+            headers:  { "Content-Type": "text/plain;charset=utf-8" },
+            redirect: "follow",
+            body:     JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+
+        if (result.status === "success") {
+            afiseazaStatus("✓ SUCCES! Datele au fost salvate.", "status-success");
+            
+            document.getElementById('dynamicFields').innerHTML = '';
+            const catSelect = document.getElementById('catSelect');
+            catSelect.innerHTML = '<option value="">-- Mai întâi alegeți operațiunea --</option>';
+            catSelect.disabled = true;
+            document.getElementById('opSelect').selectedIndex = 0;
+            verificaAfisareButon();
+            
+        } else if (result.status === "forbidden") {
+            afiseazaStatus(`⛔ Acces refuzat: ${result.message || 'Adresa ta nu este în lista autorizată.'}`, "status-error");
+            esteAutentificat = false;
+            document.getElementById('userIdToken').value = "";
+        } else {
+            afiseazaStatus("Eroare Server: " + (result.message || "Eroare necunoscută."), "status-error");
+        }
+    } catch (e) {
+        afiseazaStatus("Eroare conexiune. Verifică link-ul scriptului GAS sau conexiunea la internet.", "status-error");
+        console.error("Fetch error:", e);
+    }
+
+    btnSubmit.disabled = false;
+} 
+
+    const toBase64 = file => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload  = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+    });
+
+    function afiseazaStatus(mesaj, clasa) {
+        const box = document.getElementById('statusBox');
+        box.style.display = 'block';
+        box.className = '';
+        box.classList.add(clasa);
+        box.innerText = mesaj;
+    }
+</script>
 
 </body>
 </html>

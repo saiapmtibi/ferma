@@ -543,11 +543,11 @@ async function aplicăAutentificareReușită(idToken, email) {
         imagistica: `
             <div class="form-group full-width">
                 <label for="inpFoto">Upload Imagine</label>
-                <input type="file" id="inpFoto" accept="image/*">
+                <input type="file" id="inpFoto" accept="image/*" capture="environment">
             </div>
             <div class="form-group full-width">
                 <label for="inpObs">Observații</label>
-                <input type="text" class="p-nume" list="listaNomenclator" oninput="autoCompleteaza(this)" placeholder="ex: Captan 80 WDG" autocomplete="off">
+                <input type="text" class="p-nume" list="listaNomenclator" oninput="autoCompleteaza(this)" placeholder="ex: Descrie imaginea" autocomplete="off">
             </div>
         `,
         irigare: `
@@ -820,7 +820,7 @@ async function trimiteDate() {
     if (operatiune === 'imagistica') {
         const fileInput = document.getElementById('inpFoto');
         if (fileInput && fileInput.files.length > 0) {
-            const MAX_SIZE_MB = 5;
+            const MAX_SIZE_MB = 15;
             if (fileInput.files[0].size > MAX_SIZE_MB * 1024 * 1024) {
                 afiseazaStatus(`Imaginea depășește ${MAX_SIZE_MB}MB. Te rugăm să comprimi fișierul.`, "status-error");
                 btnSubmit.disabled = false;

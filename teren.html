@@ -541,15 +541,15 @@ async function aplicăAutentificareReușită(idToken, email) {
     };
    const sabloaneCampuri = {
         imagistica: `
-            <div style="display: flex; gap: 10px; margin-top: 5px;">
-                <button type="button" style="padding: 10px; flex: 1; cursor: pointer;" 
+            <div style="display: flex; gap: 10px; margin-top: 10px; margin-bottom: 15px;">
+                <button type="button" class="btn btn-primary" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; text-align: center;" 
                 onclick="document.getElementById('inpFoto').setAttribute('capture', 'environment'); document.getElementById('inpFoto').click();">
-                📸 Deschide camera
+                <i class="fa-solid fa-camera"></i> Deschide camera
                 </button>
     
-                <button type="button" style="padding: 10px; flex: 1; cursor: pointer;" 
+                <button type="button" class="btn btn-primary" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; text-align: center;" 
                 onclick="document.getElementById('inpFoto').removeAttribute('capture'); document.getElementById('inpFoto').click();">
-                🖼️ Încarcă din galerie
+                <i class="fa-solid fa-image"></i> Încarcă din galerie
                 </button>
             </div>
             

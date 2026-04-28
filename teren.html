@@ -541,25 +541,23 @@ async function aplicăAutentificareReușită(idToken, email) {
     };
    const sabloaneCampuri = {
         imagistica: `
-            <div class="form-group full-width">
-                <label for="inpFoto">Upload Imagine</label>
-                <input type="file" id="inpFoto" accept="image/*">
+            <div style="display: flex; gap: 10px; margin-top: 5px;">
+                <button type="button" style="padding: 10px; flex: 1; cursor: pointer;" 
+                onclick="document.getElementById('inpFoto').setAttribute('capture', 'environment'); document.getElementById('inpFoto').click();">
+                📸 Deschide camera
+                </button>
+    
+                <button type="button" style="padding: 10px; flex: 1; cursor: pointer;" 
+                onclick="document.getElementById('inpFoto').removeAttribute('capture'); document.getElementById('inpFoto').click();">
+                🖼️ Încarcă din galerie
+                </button>
             </div>
+            
+            <input type="file" id="inpFoto" accept="image/*" style="display: none;">
+
             <div class="form-group full-width">
                 <label for="inpObs">Observații</label>
-                <input type="text" class="p-nume" list="listaNomenclator" oninput="autoCompleteaza(this)" placeholder="ex: Descrie imaginea" autocomplete="off">
-            </div>
-        `,
-        irigare: `
-            <div class="form-grid full-width">
-                <div class="form-group">
-                    <label for="inpNorma">Norma de udare (m³/ha)</label>
-                    <input type="number" id="inpNorma" placeholder="ex: 150" min="0">
-                </div>
-                <div class="form-group">
-                    <label for="inpObs">Observații Irigare</label>
-                    <input type="text" id="inpObs" placeholder="Adaugă detalii" autocomplete="off">
-                </div>
+                <input type="text" id="inpObs" class="p-nume" list="listaNomenclator" oninput="autoCompleteaza(this)" placeholder="ex: Descrie imaginea" autocomplete="off">
             </div>
         `,
         tratament: `

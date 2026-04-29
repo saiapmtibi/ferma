@@ -11,3 +11,6 @@ __pycache__/
 
 # Ignoră fișierele de mediu virtual (dacă folosești) sau de configurare locale
 .env
+credentialsGCloud.json
+cron_log.log
+module_deterministe/baza_date_locala/

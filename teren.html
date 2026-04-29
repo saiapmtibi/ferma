@@ -336,7 +336,25 @@
     
     <div id="statusBox" style="margin-top: 20px;"></div>
 </div>
+</div> <!-- Aici se închide secțiunea cu logare -->
+
+<!-- SECȚIUNEA PUBLICĂ (Vizibilă mereu) -->
+<div class="interactive-section" id="public-dashboard" style="margin-top: 40px; padding: 30px 40px;">
+    <h3 style="color: var(--text-primary); margin-bottom: 25px; font-size: 1.3rem; text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 15px;">
+        📡 Status Live Teren
+    </h3>
+    <div class="form-grid">
+        <div class="form-group" style="background: rgba(255,255,255,0.02); padding: 20px; border-radius: 8px; border: 1px solid var(--border);">
+            <h4 style="color: var(--accent-cyan); margin-bottom: 10px; font-size: 0.9rem; text-transform: uppercase;">📸 Memorie Vizuală (AI)</h4>
+            <p id="live-vizual" style="font-family: var(--mono); font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">Se încarcă datele...</p>
+        </div>
+        <div class="form-group" style="background: rgba(255,255,255,0.02); padding: 20px; border-radius: 8px; border: 1px solid var(--border);">
+            <h4 style="color: var(--accent-cyan); margin-bottom: 10px; font-size: 0.9rem; text-transform: uppercase;">🚜 Tratamente și Avertizări</h4>
+            <p id="live-tratamente" style="font-family: var(--mono); font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">Se încarcă datele...</p>
+        </div>
+    </div>
 </div>
+
 </main>
 <div class="bottom-actions">
     <a href="index.html" class="btn-back" rel="noopener noreferrer">← Înapoi la Dashboard</a>
@@ -384,10 +402,34 @@
 }
     
 // ───────────────────────────────────────────────────────────────────────────────
+//  PRELUARE DATE PUBLICE (DIN RAPORT.JSON)
+// ───────────────────────────────────────────────────────────────────────────────
+    async function incarcaDatePublice() {
+        try {
+            // ?t=... previne browserul să folosească o versiune veche din cache
+            const response = await fetch('raport.json?t=' + new Date().getTime());
+            if (response.ok) {
+                const data = await response.json();
+                document.getElementById('live-vizual').innerText = data.noua_memorie_vizuala || "Nu există observații vizuale recente.";
+                document.getElementById('live-tratamente').innerText = data.noua_memorie_avertizari || "Nu există tratamente sau avertizări active.";
+            } else {
+                document.getElementById('live-vizual').innerText = "Fișierul de date nu a fost generat încă.";
+                document.getElementById('live-tratamente').innerText = "Fișierul de date nu a fost generat încă.";
+            }
+        } catch (error) {
+            console.error("Eroare la încărcarea datelor publice:", error);
+            document.getElementById('live-vizual').innerText = "Eroare la preluarea datelor serverului.";
+            document.getElementById('live-tratamente').innerText = "Eroare la preluarea datelor serverului.";
+        }
+    }
+
+// ───────────────────────────────────────────────────────────────────────────────
 //  INIȚIALIZARE LA ÎNCĂRCAREA PAGINII
 // ───────────────────────────────────────────────────────────────────────────────
 
     window.onload = function () {
+        incarcaDatePublice(); // Se rulează instant pentru toți utilizatorii
+        
         if (typeof google !== 'undefined') {
             google.accounts.id.initialize({
                 client_id: GOOGLE_CLIENT_ID,

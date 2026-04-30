@@ -305,7 +305,6 @@
             font-size: 0.8rem;
             color: var(--text-secondary);
             overflow-x: auto;
-            white-space: pre-wrap; /* Păstrează formatarea tabelului text din AI */
         }
         /* ── REPORT CARD ── */
         .report-card {
@@ -538,19 +537,20 @@
         .disclaimer-card strong {
             color: var(--status-warn); /* Folosește galbenul din temă pentru titlul notei */
         }
-        /* ── STILIZARE TABEL MARKDOWN ── */
-        #raport-continut table {
-            width: 100%; border-collapse: collapse; margin: 20px 0;
+        /* ── STILIZARE TABEL MARKDOWN & ISTORIC ── */
+        #raport-continut table, .history-content table {
+            width: 100%; border-collapse: collapse; margin: 0;
             font-family: var(--mono); font-size: 0.8rem; color: var(--text-secondary);
         }
-        #raport-continut th, #raport-continut td {
+        #raport-continut th, .history-content th,
+        #raport-continut td, .history-content td {
             border: 1px solid var(--border); padding: 12px; text-align: left;
         }
-        #raport-continut th {
+        #raport-continut th, .history-content th {
             background: var(--bg-card2); color: var(--accent-cyan);
             font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
         }
-        #raport-continut tr:nth-child(even) {
+        #raport-continut tr:nth-child(even), .history-content tr:nth-child(even) {
             background: rgba(79, 195, 247, 0.03);
         }
         /* ── BUTON ÎNAPOI ── */

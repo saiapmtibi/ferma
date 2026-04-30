@@ -588,14 +588,30 @@
 
     <div class="report-card">
         <div class="report-card-header">
-            <h2>STRES RADIATIV</h2>
+            <h2>STRES HIDRIC</h2>
             <span id="ts" style="display: none;"></span> 
         </div>
-        <div class="report-body">
+        
+        <!-- HISTORY BUTTON (ACORDEON) -->
+        <div style="padding: 24px 36px 0;">
+            <button class="history-btn" id="historyBtn">
+                <span><i style="margin-right:8px;">📊</i> Vizualizează istoric climatic din ultimele 24 de ore</span>
+                <span class="history-icon">▼</span>
+            </button>
+            <div class="history-content" id="historyContent">
+                Se încarcă datele brute...
+            </div>
+        </div>
+        <!-- END HISTORY BUTTON -->
+
+        <div class="report-body" style="padding-top: 10px;">
             <div id="raport-continut">
                 <div class="loading-shimmer">
                     <div class="shimmer-line"></div>
-                    <!-- ... restul de div-uri ... -->
+                    <div class="shimmer-line"></div>
+                    <div class="shimmer-line"></div>
+                    <div class="shimmer-line"></div>
+                    <div class="shimmer-line"></div>
                 </div>
             </div>
         </div>

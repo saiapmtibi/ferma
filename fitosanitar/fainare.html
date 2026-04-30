@@ -260,7 +260,53 @@
             font-size: 0.95rem;
             color: var(--accent-blue);
         }
+        /* ── HISTORY ACCORDION ── */
+        .history-btn {
+            width: 100%;
+            background: rgba(79, 195, 247, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 18px 24px;
+            color: var(--accent-cyan);
+            font-family: var(--mono);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            margin-bottom: 24px;
+        }
 
+        .history-btn:hover {
+            background: rgba(79, 195, 247, 0.1);
+            border-color: var(--accent-cyan);
+        }
+
+        .history-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .history-btn.active .history-icon {
+            transform: rotate(180deg);
+        }
+
+        .history-content {
+            display: none;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin-top: -12px;
+            margin-bottom: 24px;
+            font-family: var(--mono);
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            overflow-x: auto;
+            white-space: pre-wrap; /* Păstrează formatarea tabelului text din AI */
+        }
         /* ── REPORT CARD ── */
         .report-card {
             background: var(--bg-card);
@@ -575,13 +621,26 @@
         </div>
     </div>
 
-    <!-- REPORT CARD Disclaimer -->
+    <!-- REPORT CARD -->
     <div class="report-card">
         <div class="report-card-header">
             <h2>RAPORT</h2>
             <span id="ts" style="display: none;"></span> 
         </div>
-        <div class="report-body">
+        
+        <!-- HISTORY BUTTON (ACORDEON) -->
+        <div style="padding: 24px 36px 0;">
+            <button class="history-btn" id="historyBtn">
+                <span><i style="margin-right:8px;">📊</i> Vizualizează istoric climatic din ultimele 24 de ore</span>
+                <span class="history-icon">▼</span>
+            </button>
+            <div class="history-content" id="historyContent">
+                Se încarcă datele brute...
+            </div>
+        </div>
+        <!-- END HISTORY BUTTON -->
+
+        <div class="report-body" style="padding-top: 10px;"> <!-- Padding redus sus pentru continuitate -->
             <div id="raport-continut">
                 <div class="loading-shimmer">
                     <div class="shimmer-line"></div>
@@ -685,7 +744,14 @@
                 document.getElementById('ts').textContent = data.data_generare;
             }
 
-            // ATENTIE AICI: Extragem strict datele pentru rapăn
+            // EXTRAGERE DATE BRUTE PENTRU ISTORIC
+            if(data.date_brute) {
+                document.getElementById('historyContent').textContent = data.date_brute;
+            } else {
+                document.getElementById('historyContent').textContent = "Nu există date istorice disponibile pentru acest interval.";
+            }
+
+            // ATENTIE AICI: Extragem strict datele pentru fainare
             const dateFainare = data.fainare;
 
             if (dateFainare && dateFainare.continut) {
@@ -694,7 +760,6 @@
             } else {
                  throw new Error("Date fainare lipsă în JSON");
             }
-
 
             /* Staggered fade-in for list items */
             document.querySelectorAll('#raport-continut li').forEach((li, i) => {
@@ -716,6 +781,17 @@
             document.getElementById('status-text').textContent = 'Eroare Sistem';
             document.getElementById('status-icon').textContent = '❌';
         });
+
+    /* ── History Toggle Logic ── */
+    document.getElementById('historyBtn').addEventListener('click', function() {
+        this.classList.toggle('active');
+        const content = document.getElementById('historyContent');
+        if (content.style.display === 'block') {
+            content.style.display = 'none';
+        } else {
+            content.style.display = 'block';
+        }
+    });
 </script>
 </body>
 </html>

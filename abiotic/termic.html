@@ -487,19 +487,38 @@
         .disclaimer-card strong {
             color: var(--status-warn); 
         }
-        /* ── STILIZARE TABEL MARKDOWN ── */
-        #raport-continut table {
-            width: 100%; border-collapse: collapse; margin: 20px 0;
+        /* ── HISTORY ACCORDION ── */
+        .history-btn {
+            width: 100%; background: rgba(79, 195, 247, 0.05); border: 1px solid var(--border);
+            border-radius: 12px; padding: 18px 24px; color: var(--accent-cyan); font-family: var(--mono);
+            font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; cursor: pointer;
+            display: flex; justify-content: space-between; align-items: center; transition: all 0.3s ease;
+            margin-bottom: 24px;
+        }
+        .history-btn:hover { background: rgba(79, 195, 247, 0.1); border-color: var(--accent-cyan); }
+        .history-icon { transition: transform 0.3s ease; }
+        .history-btn.active .history-icon { transform: rotate(180deg); }
+
+        .history-content {
+            display: none; background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 12px; padding: 24px; margin-top: -12px; margin-bottom: 24px;
+            font-family: var(--mono); font-size: 0.8rem; color: var(--text-secondary); overflow-x: auto;
+        }
+
+        /* ── STILIZARE TABEL MARKDOWN & ISTORIC ── */
+        #raport-continut table, .history-content table {
+            width: 100%; border-collapse: collapse; margin: 0;
             font-family: var(--mono); font-size: 0.8rem; color: var(--text-secondary);
         }
-        #raport-continut th, #raport-continut td {
+        #raport-continut th, .history-content th,
+        #raport-continut td, .history-content td {
             border: 1px solid var(--border); padding: 12px; text-align: left;
         }
-        #raport-continut th {
+        #raport-continut th, .history-content th {
             background: var(--bg-card2); color: var(--accent-cyan);
             font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
         }
-        #raport-continut tr:nth-child(even) {
+        #raport-continut tr:nth-child(even), .history-content tr:nth-child(even) {
             background: rgba(79, 195, 247, 0.03);
         }
         /* ── BUTON ÎNAPOI ── */
@@ -576,10 +595,7 @@
             <div id="raport-continut">
                 <div class="loading-shimmer">
                     <div class="shimmer-line"></div>
-                    <div class="shimmer-line"></div>
-                    <div class="shimmer-line"></div>
-                    <div class="shimmer-line"></div>
-                    <div class="shimmer-line"></div>
+                    <!-- ... restul de div-uri ... -->
                 </div>
             </div>
         </div>
@@ -672,16 +688,26 @@
                 document.getElementById('ts').textContent = data.data_generare;
             }
 
-            // ATENTIE AICI: Extragem strict datele pentru STRES TERMIC
-            const dateSursa = data.stres_termic;
+            // ATENTIE AICI: Extragem strict datele pentru STRES-ul specific paginii curente
+            const dateSursa = data.stres_termic; // ex: data.stres_termic
 
             if (dateSursa && dateSursa.continut) {
                 document.getElementById('raport-continut').innerHTML = marked.parse(dateSursa.continut);
                 setStatus(dateSursa.status);
-            } else {
-                 throw new Error("Date stres termic lipsă în JSON");
-            }
 
+                // LOGICĂ IZOLARE TABEL
+                const tabelAI = document.querySelector('#raport-continut table');
+                const historyContent = document.getElementById('historyContent');
+                if (tabelAI) {
+                    historyContent.innerHTML = ''; 
+                    historyContent.appendChild(tabelAI); 
+                } else {
+                    historyContent.textContent = "Sistemul nu a generat un tabel de istoric climatic pentru această rulare.";
+                }
+
+            } else {
+                 throw new Error("Date stres lipsă în JSON");
+            }
 
             /* Staggered fade-in for list items */
             document.querySelectorAll('#raport-continut li').forEach((li, i) => {
@@ -703,6 +729,17 @@
             document.getElementById('status-text').textContent = 'Eroare Sistem';
             document.getElementById('status-icon').textContent = '❌';
         });
+
+    /* ── History Toggle Logic ── */
+    document.getElementById('historyBtn').addEventListener('click', function() {
+        this.classList.toggle('active');
+        const content = document.getElementById('historyContent');
+        if (content.style.display === 'block') {
+            content.style.display = 'none';
+        } else {
+            content.style.display = 'block';
+        }
+    });
 </script>
 </body>
 </html>

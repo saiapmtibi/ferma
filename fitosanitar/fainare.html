@@ -737,50 +737,58 @@
 
     /* ── Fetch report ── */
         fetch('../raport.json?cache=' + Date.now())
-        .then(res => res.json())
-        .then(data => {
-            if(data.data_generare) {
-                document.getElementById('update-time').textContent = data.data_generare;
-                document.getElementById('ts').textContent = data.data_generare;
-            }
+    .then(res => res.json())
+    .then(data => {
+        if(data.data_generare) {
+            document.getElementById('update-time').textContent = data.data_generare;
+            document.getElementById('ts').textContent = data.data_generare;
+        }
 
-            // EXTRAGERE DATE BRUTE PENTRU ISTORIC
-            if(data.date_brute) {
-                document.getElementById('historyContent').textContent = data.date_brute;
+        const dateFainare = data.fainare;
+
+        if (dateFainare && dateFainare.continut) {
+            // Parsăm raportul complet primit de la AI
+            document.getElementById('raport-continut').innerHTML = marked.parse(dateFainare.continut);
+            setStatus(dateFainare.status);
+
+            // LOGICA DE IZOLARE A TABELULUI
+            // Căutăm automat elementul <table> în interiorul raportului generat de AI
+            const tabelAI = document.querySelector('#raport-continut table');
+            const historyContent = document.getElementById('historyContent');
+            
+            if (tabelAI) {
+                // Dacă AI-ul a generat un tabel, îl mutăm din raport în containerul ascuns
+                historyContent.innerHTML = ''; // Golim textul "Se încarcă..."
+                historyContent.appendChild(tabelAI); 
             } else {
-                document.getElementById('historyContent').textContent = "Nu există date istorice disponibile pentru acest interval.";
+                // Dacă nu a generat tabel
+                historyContent.textContent = "AI-ul nu a generat un tabel de istoric climatic pentru această rulare.";
             }
 
-            // ATENTIE AICI: Extragem strict datele pentru fainare
-            const dateFainare = data.fainare;
+        } else {
+             throw new Error("Date fainare lipsă în JSON");
+        }
 
-            if (dateFainare && dateFainare.continut) {
-                document.getElementById('raport-continut').innerHTML = marked.parse(dateFainare.continut);
-                setStatus(dateFainare.status);
-            } else {
-                 throw new Error("Date fainare lipsă în JSON");
-            }
-
-            /* Staggered fade-in for list items */
-            document.querySelectorAll('#raport-continut li').forEach((li, i) => {
-                li.style.opacity = '0';
-                li.style.transform = 'translateY(8px)';
-                li.style.transition = `opacity 0.35s ease ${i * 0.06}s, transform 0.35s ease ${i * 0.06}s`;
-                requestAnimationFrame(() => {
-                    li.style.opacity = '1';
-                    li.style.transform = 'translateY(0)';
-                });
+        /* Staggered fade-in for list items */
+        document.querySelectorAll('#raport-continut li').forEach((li, i) => {
+            li.style.opacity = '0';
+            li.style.transform = 'translateY(8px)';
+            li.style.transition = `opacity 0.35s ease ${i * 0.06}s, transform 0.35s ease ${i * 0.06}s`;
+            requestAnimationFrame(() => {
+                li.style.opacity = '1';
+                li.style.transform = 'translateY(0)';
             });
-        })
-        .catch(() => {
-            document.getElementById('raport-continut').innerHTML =
-                `<p style="color:var(--status-alert); font-family:var(--mono); font-size:0.85rem;">
-                    ⚠ Eroare la preluarea datelor din sistem. Verificați conexiunea sau fișierul <code>raport.json</code>.
-                </p>`;
-            document.getElementById('status-panel').classList.add('st-alert');
-            document.getElementById('status-text').textContent = 'Eroare Sistem';
-            document.getElementById('status-icon').textContent = '❌';
         });
+    })
+    .catch(() => {
+        document.getElementById('raport-continut').innerHTML =
+            `<p style="color:var(--status-alert); font-family:var(--mono); font-size:0.85rem;">
+                ⚠ Eroare la preluarea datelor din sistem. Verificați conexiunea sau fișierul <code>raport.json</code>.
+            </p>`;
+        document.getElementById('status-panel').classList.add('st-alert');
+        document.getElementById('status-text').textContent = 'Eroare Sistem';
+        document.getElementById('status-icon').textContent = '❌';
+    });
 
     /* ── History Toggle Logic ── */
     document.getElementById('historyBtn').addEventListener('click', function() {
@@ -792,6 +800,7 @@
             content.style.display = 'block';
         }
     });
+
 </script>
 </body>
 </html>

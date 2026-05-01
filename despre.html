@@ -241,61 +241,60 @@
 
     <div class="summary-box">
         <p><strong>Platforma de Predicție Multi-Risc pentru specia <em>Malus domestica</em></strong> este un sistem de agricultură de precizie fundamentat pe o <strong>Arhitectură Neuro-Simbolică</strong>. Aceasta transformă datele brute de microclimat și prognoză în decizii agronomice proactive, 
-            operând printr-un pipeline de date pe 5 niveluri. Sistemul separă rigurozitatea matematică de capacitatea de sinteză: procesează determinist telemetria prin modele validate științific (Nivelul Simbolic), iar ulterior utilizează un motor de Inteligență Artificială Generativă 
+            operând printr-o structură de date pe 5 niveluri. Sistemul separă rigurozitatea matematică de capacitatea de sinteză: procesează determinist telemetria prin modele validate științific (Nivelul Simbolic), iar ulterior utilizează un motor de Inteligență Artificială Generativă 
             (Nivelul Cognitiv) pentru a formula recomandări în limbaj natural. Platforma anticipează presiunea patogenilor, dinamica dăunătorilor și impactul stresului abiotic, calibrând constant predicțiile printr-o buclă de validare din teren (Ground-Truth).
             Datele sunt distribuite în 4 module de expertiză, permițând optimizarea ferestrelor de intervenție, managementul integrat al livezii și reducerea amprentei chimice.</p>
     </div>
     
     <div class="content-card">
-        <h2 class="page-title">Arhitectura Sistemului</h2>
-        <p class="intro-text">Arhitectura platformei este structurată pe un pipeline de date format din 5 nivele interdependente, care funcționează într-o buclă continuă de tip feed-forward.</p>
-
-        <h3 class="level-title"><span>Nivelul 1:</span> Achiziția Datelor (Data Ingestion Level)</h3>
+        <h2 class="page-title">Arhitectura platformei</h2>
+        
+        <h3 class="level-title"><span>Nivelul 1:</span> Achiziția datelor (Data ingestion level)</h3>
         <p>Acest nivel reprezintă interfața sistemului cu mediul fizic, având rolul de a agrega date heterogene, spațio-temporale.</p>
         <ul>
-            <li><strong class="highlight">Vectorul Istoric (Telemetrie In-Situ):</strong> Achiziția datelor deterministe de microclimat prin intermediul stației meteorologice amplasate în livadă. Datele brute (temperatură, umiditate, radiație solară, viteza vântului, precipitații) sunt stocate și structurate local într-o bază de date relațională (SQLite).</li>
-            <li><strong class="highlight">Vectorul Predictiv (Prognoză API):</strong> Extragerea datelor meteorologice pe un orizont de 48 de ore de pe site-ul <em>openweathermap.org</em>, necesare translației de la o analiză retrospectivă la una proactivă (prevenție).</li>
+            <li><strong class="highlight">Vectorul istoric (Telemetrie <em>in-situ</em>):</strong> Achiziția datelor deterministe de microclimat prin intermediul stației meteorologice amplasate în livadă. Datele brute (temperatură, umiditate, radiație solară, viteza vântului, precipitații) sunt stocate și structurate local într-o bază de date relațională (SQLite).</li>
+            <li><strong class="highlight">Vectorul predictiv (Prognoză API):</strong> Extragerea datelor meteorologice pe un orizont de 48 de ore de pe site-ul <em>openweathermap.org</em>, necesare translației de la o analiză retrospectivă la una proactivă (prevenție).</li>
         </ul>
 
-        <h3 class="level-title"><span>Nivelul 2:</span> Procesare Deterministă și Modelare Matematică (Symbolic Processing Level)</h3>
+        <h3 class="level-title"><span>Nivelul 2:</span> Procesare deterministă și modelare matematică (Symbolic processing level)</h3>
         <p>Aici are loc calculul „rigid”, bazat pe ecuații imuabile, unde rețelele neuronale nu au voie să intervină. Sistemul aplică reguli stricte (If-Then) și modele validate științific:</p>
         <ul>
-            <li><strong class="highlight">Modele Fitosanitare:</strong> Evaluarea ferestrelor de infecție prin algoritmi consacrați (ex: Modelul Mills pentru <em>Venturia inaequalis</em>, Modelul Xu pentru <em>Podosphaera leucotricha</em>).</li>
-            <li><strong class="highlight">Modele Fiziologice și Abiotice:</strong> Calcularea parametrilor critici precum Acumularea Termică (GDD - Growing Degree Days pentru fenofază), Deficitul de Presiune a Vaporilor (VPD) și bilanțul hidric curent al solului.</li>
+            <li><strong class="highlight">Modele fitosanitare:</strong> Evaluarea ferestrelor de infecție prin algoritmi consacrați (ex: Modelul Mills pentru <em>Venturia inaequalis</em>, Modelul Xu pentru <em>Podosphaera leucotricha</em>).</li>
+            <li><strong class="highlight">Modele fiziologice și abiotice:</strong> Calcularea parametrilor critici precum Acumularea Termică (GDD - Growing Degree Days pentru fenofază), Deficitul de Presiune a Vaporilor (VPD) și bilanțul hidric curent al solului.</li>
             <li><strong class="highlight">Output:</strong> Rezultatul acestui strat este un arbore decizional clar, cu statusuri binare sau pe categorii (Inexistent / Moderat / Ridicat).</li>
         </ul>
 
-        <h3 class="level-title"><span>Nivelul 3:</span> Raționament Generativ și Sinteză (Cognitive Level)</h3>
-        <p>Acest nivel transformă logica matematică rece într-o decizie agronomică aplicabilă, utilizând un Model de Limbaj Mare (LLM).</p>
+        <h3 class="level-title"><span>Nivelul 3:</span> Raționament generativ și sinteză (Cognitive level)</h3>
+        <p>Acest nivel transformă logica matematică într-o decizie agronomică aplicabilă, utilizând un Model de Limbaj Mare (LLM).</p>
         <ul>
-            <li><strong class="highlight">Mecanism de Funcționare:</strong> Motorul de Inteligență Artificială primește ca input (prompt) datele procesate de nivelul simbolic (nivelul 2), însoțite de un set de metaparametri (ex: interzicerea halucinațiilor, respectarea principiului precauției).</li>
-            <li><strong class="highlight">Valoare Adăugată:</strong> Sistemul corelează simultan mai mulți factori complecși (ex: impactul stresului mecanic eolian asupra riscului de infecție cu monilioză) și formulează sinteze, diagnostice și recomandări tehnice de intervenție, adaptate fenofazei curente a culturii.</li>
+            <li><strong class="highlight">Mecanism de funcționare:</strong> Motorul de Inteligență Artificială primește ca input (prompt) datele procesate de nivelul simbolic (nivelul 2), însoțite de un set de metaparametri (ex: interzicerea halucinațiilor, respectarea principiului precauției).</li>
+            <li><strong class="highlight">Valoare adăugată:</strong> Sistemul corelează simultan mai mulți factori complecși (ex: impactul stresului mecanic eolian asupra riscului de infecție cu monilioză) și formulează sinteze, diagnostice și recomandări tehnice de intervenție, adaptate fenofazei curente a culturii.</li>
         </ul>
 
-        <h3 class="level-title"><span>Nivelul 4:</span> Validare Empirică (Ground-Truth și Calibrare)</h3>
-        <p>Un sistem hibrid necesită ancorare în realitatea obiectivă pentru a preveni deviația (model drift). Acest strat este elementul de noutate majoră în arhitectură:</p>
+        <h3 class="level-title"><span>Nivelul 4:</span> Validare și feedback (Ground-Truth și Calibrare)</h3>
+        <p>Un sistem hibrid necesită ancorare în realitatea obiectivă pentru a preveni deviația și/sau halucinația (model drift). Acest strat este elementul de noutate majoră în arhitectură:</p>
         <ul>
-            <li><strong class="highlight">Teledetecție și Fenotipare:</strong> Integrarea indicilor multispectrali (ortofotoplanuri NDVI generate prin zboruri cu UAV) și a imagisticii RGB in-situ pentru a evalua vigoarea reală a foliajului sau prezența fizică a agenților patogeni/dăunătorilor (capcane entomologice).</li>
-            <li><strong class="highlight">Registrul Agrotehnic:</strong> Inputul uman detaliat (norme de irigare aplicate, tratamente fitosanitare executate, fertilizări).</li>
+            <li><strong class="highlight">Teledetecție și fenotipare:</strong> Integrarea indicilor multispectrali (ortofotoplanuri NDVI generate prin zboruri cu UAV) și a imagisticii RGB <em>in-situ</em> pentru a evalua vigoarea reală a foliajului sau prezența fizică a agenților patogeni/dăunătorilor (capcane entomologice).</li>
+            <li><strong class="highlight">Registrul agrotehnic:</strong> Inputul uman detaliat (norme de irigare aplicate, tratamente fitosanitare executate, fertilizări).</li>
             <li><strong class="highlight">Impact:</strong> Acest nivel funcționează ca o buclă de feedback. El afirmă sau infirmă predicțiile algoritmice și neuronale, validând exactitatea platformei.</li>
         </ul>
 
-        <h3 class="level-title"><span>Nivelul 5:</span> Prezentare și Trasabilitate (UI & Persistence Layer)</h3>
+        <h3 class="level-title"><span>Nivelul 5:</span> Prezentare și trasabilitate (UI & Persistence layer)</h3>
         <p>Etapa finală se ocupă de diseminarea informației și de formarea memoriei instituționale a fermei.</p>
         <ul>
-            <li><strong class="highlight">Prezentare Dinamică:</strong> Generarea unor obiecte structurate (fișiere JSON) care alimentează asincron un Dashboard web responsiv. Acesta oferă fermierului sau cercetătorului o interfață clară, scindată în cele 4 module de expertiză.</li>
-            <li><strong class="highlight">Arhivare și Trasabilitate:</strong> Consolidarea rapoartelor sub formă de documente tip Markdown (.md). Acest aspect asigură un registru de tip arhiva, permițând interogări ulterioare, auditarea tratamentelor aplicate (esențial pentru certificările ecologice) și constituirea unui set de date extins pentru antrenarea viitoarelor modele AI.</li>
+            <li><strong class="highlight">Prezentare dinamică:</strong> Generarea unor obiecte structurate (fișiere JSON) care alimentează asincron un dashboard web responsiv. Acesta oferă fermierului sau cercetătorului o interfață clară, scindată în cele 4 module de expertiză.</li>
+            <li><strong class="highlight">Arhivare și trasabilitate:</strong> Consolidarea rapoartelor sub formă de documente tip Markdown (.md). Acest aspect asigură un registru de tip arhiva, permițând interogări ulterioare, auditarea tratamentelor aplicate (esențial pentru certificările ecologice) și constituirea unui set de date extins pentru antrenarea viitoarelor modele AI.</li>
         </ul>
 
         <hr style="border:none; border-top:1px solid var(--border); margin: 40px 0;">
 
-        <h2 class="page-title" style="font-size: 1.6rem;">Structura Platformei: Modulele de Interfață</h2>
-        <p>Rezultatul acestui pipeline complex este distribuit în 4 module de expertiză vizibile în Dashboard:</p>
+        <h2 class="page-title" style="font-size: 1.6rem;">Structura platformei: Modulele de interfață</h2>
+        <p>Rezultatul acestui pipeline complex este distribuit în 4 module de expertiză vizibile în dashboard:</p>
         <ul>
-            <li><strong class="highlight">Modulul Fitosanitar:</strong> Evaluează și anticipează infecțiile fungice majore (Venturia inaequalis, Podosphaera leucotricha, Monilinia fructigena).</li>
-            <li><strong class="highlight">Modulul Entomologic (În dezvoltare):</strong> Monitorizează dinamica dăunătorilor specifici (Păduchele din San Jose, Păduchele lânos, Viermele merelor, Păianjenul roșu).</li>
-            <li><strong class="highlight">Modulul de Stres Abiotic:</strong> Monitorizează factorii de mediu extremi care afectează fiziologia plantei (stres hidric, termic, radiativ și eolian).</li>
-            <li><strong class="highlight">Modulul de Validare Teren & Teledetecție  (În dezvoltare):</strong> Interfața prin care specialistul introduce datele de la Nivelul 4 (ortofoto NDVI, poze in-situ, jurnal de tratamente).</li>
+            <li><strong class="highlight">Modulul fitosanitar:</strong> Evaluează și anticipează infecțiile fungice majore (<em>Venturia inaequalis</em>, <em>Podosphaera leucotricha</em>, <em>Monilinia fructigena</em>).</li>
+            <li><strong class="highlight">Modulul entomologic (În dezvoltare):</strong> Monitorizează dinamica dăunătorilor specifici (Păduchele din San Jose, Păduchele lânos, Viermele merelor, Păianjenul roșu).</li>
+            <li><strong class="highlight">Modulul de stres abiotic:</strong> Monitorizează factorii de mediu extremi care afectează fiziologia plantei (stres hidric, termic, radiativ și eolian).</li>
+            <li><strong class="highlight">Modulul de validare teren & teledetecție:</strong> Interfața prin care specialistul introduce datele de la Nivelul 4 (ortofoto NDVI, poze in-situ, jurnal de tratamente).</li>
         </ul>
     </div>
 
@@ -316,7 +315,7 @@
             </div>
 
             <div class="form-group">
-                <label for="raport-select">Alegeți Raportul</label>
+                <label for="raport-select">Alegeți raportul</label>
                 <select id="raport-select" disabled>
                     <option value="none">În așteptare selecție...</option>
                 </select>
@@ -325,7 +324,7 @@
 
         <div id="model-info-box" style="display: none; margin-top: 30px; text-align: left; background: rgba(0, 229, 204, 0.05); border-left: 4px solid var(--accent-cyan); padding: 20px; border-radius: 0 8px 8px 0;">
             <h4 id="model-titlu" style="font-family: var(--mono); color: var(--accent-cyan); margin-bottom: 10px; font-size: 1.1rem;">Titlu Model</h4>
-            <p id="model-descriere" style="font-size: 0.95rem; color: var(--text-primary); line-height: 1.6; margin: 0;">Descrierea modelului va apărea aici.</p>
+           <p id="model-descriere" style="font-size: 0.95rem; color: var(--text-primary); line-height: 1.6; margin: 0; text-align: justify;">Descrierea modelului va apărea aici.</p>
         </div>
     </div>
 </main>
@@ -353,9 +352,9 @@
     const rapoarteMap = {
         'modul1': [
             { text: 'Alegeți...', value: 'none', disabled: true, selected: true, hidden: true },
-            { text: 'Venturia inaequalis (Rapăn)', value: 'venturia' },
-            { text: 'Podosphaera leucotricha (Făinare)', value: 'podosphaera' },
-            { text: 'Monilinia fructigena (Monilioză)', value: 'monilinia' }
+            { text: '𝘝𝘦𝘯𝘵𝘶𝘳𝘪𝘢 𝘪𝘯𝘢𝘦𝘲𝘶𝘢𝘭𝘪𝘴 (Rapăn)', value: 'venturia' },
+            { text: '𝘗𝘰𝘥𝘰𝘴𝘱𝘩𝘢𝘦𝘳𝘢 𝘭𝘦𝘶𝘤𝘰𝘵𝘳𝘪𝘤𝘩𝘢 (Făinare)', value: 'podosphaera' },
+            { text: '𝘔𝘰𝘯𝘪𝘭𝘪𝘯𝘪𝘢 𝘧𝘳𝘶𝘤𝘵𝘪𝘨𝘦𝘯𝘢 (Monilioză)', value: 'monilinia' }
         ],
         'modul3': [
             { text: 'Alegeți...', value: 'none', disabled: true, selected: true, hidden: true },
@@ -365,38 +364,154 @@
             { text: 'Stres Eolian', value: 'eolian' }
         ],
         'modul2': [{ text: 'În lucru...', value: 'wip', disabled: true }],
-        'modul4': [{ text: 'În lucru...', value: 'wip', disabled: true }]
+        'modul4': [
+            { text: 'Alegeți...', value: 'none', disabled: true, selected: true, hidden: true },
+            { text: 'Validare Teren & Registru Agrotehnic', value: 'teren' }
+        ]
     };
 
     // Baza de date cu modelele științifice
+    // Baza de date cu modelele științifice (Formatare Avansată, Ecuații și Bibliografie APA cu DOI)
     const modeleStiintifice = {
         'venturia': {
-            titlu: "Modelul Mills (1989) revizuit",
-            descriere: "Bazează predicția infecției primare pe corelația strictă dintre temperatura medie a aerului și numărul de ore de umectare continuă a foliajului (RH > 90%). Necesită ploaie pentru declanșare."
+            titlu: "Modelul Mills (MacHardy & Gadoury 1989)",
+            descriere: `
+                <strong>Principiu de funcționare:</strong><br>
+                Modelul evaluează riscul de infecție primară corelând temperatura medie a aerului cu numărul de ore de umectare continuă a foliajului (LWD). În absența unui senzor fizic LWD, sistemul aplică un proxy validat: Umiditate Relativă ≥ 90% sau prezența precipitațiilor active.<br><br>
+                
+                <strong>Praguri și Condiții (Revizia Mills):</strong><br>
+                Infecția este inactivă sub 6°C și peste 25°C. Orice pauză de uscare a frunzelor (RH < 90% și fără precipitații) resetează complet contorul perioadei de umectare. Pentru declanșarea unei infecții ușoare sunt necesare:<br>
+                • 6°C &rarr; 28 ore<br>
+                • 10°C &rarr; 14 ore<br>
+                • 16–23°C &rarr; 9 ore (interval critic, eficiență maximă a patogenului)<br>
+                • 25°C &rarr; 14 ore<br><br>
+                
+                <strong>Referințe Bibliografice:</strong><br>
+                <ul style="list-style-type: none; padding: 0; margin: 0; font-size: 0.9rem;">
+                    <li style="margin-bottom: 8px;">MacHardy, W. E., & Gadoury, D. M. (1989). A revision of Mills's criteria for predicting apple scab infection periods. <em>Phytopathology, 79</em>(3), 304-310. <a href="https://doi.org/10.1094/Phyto-79-304" target="_blank" style="color: var(--accent-cyan); text-decoration: none;">https://doi.org/10.1094/Phyto-79-304</a></li>
+                    <li style="margin-bottom: 8px;">Stensvand, A., Gadoury, D. M., Amundsen, T., Semb, L., & Seem, R. C. (1997). Ascospore release and infection of apple leaves by conidia and ascospores of <em>Venturia inaequalis</em> at low temperatures. <em>Phytopathology, 87</em>(10), 1046-1053. <a href="https://doi.org/10.1094/PHYTO.1997.87.10.1046" target="_blank" style="color: var(--accent-cyan); text-decoration: none;">https://doi.org/10.1094/PHYTO.1997.87.10.1046</a></li>
+                </ul>`
         },
         'podosphaera': {
-            titlu: "Modelul Xu (1999)",
-            descriere: "Spre deosebire de rapăn, ploaia abundentă (>0mm) acționează ca factor limitant (spală conidiile). Fereastra de risc major apare la umiditate relativă ridicată (>70%) și temperaturi optime între 15-25°C."
+            titlu: "Modelul de dezvoltare nonlineară (Xu 1996, 1999)",
+            descriere: `
+                <strong>Principiu de funcționare:</strong><br>
+                Apreciază riscul de infecție bazat pe rata de dezvoltare a coloniei fungice utilizând o curbă de tip beta. Făinarea (spre deosebire de rapăn) nu necesită umectare liberă, iar prezența precipitațiilor active inhibă dezvoltarea prin spălarea conidiilor de pe țesuturi.<br><br>
+                
+                <strong>Ecuații și Condiții:</strong><br>
+                Temperatura este favorabilă între T_min = 8°C și T_max = 32°C, cu un T_opt = 23°C. Condiția declanșatoare: RH ≥ 70% strict fără ploaie. Funcția de rată (normalizată la [0, 1]) este descrisă matematic prin ecuația:<br>
+                <code style="color: #a8c7fa; background: #080d14; padding: 2px 6px; border-radius: 4px;">Rata = [(T &minus; 8) / (23 &minus; 8)] &times; [(32 &minus; T) / (32 &minus; 23)]^1.6</code><br><br>
+                
+                <strong>Referințe Bibliografice:</strong><br>
+                <ul style="list-style-type: none; padding: 0; margin: 0; font-size: 0.9rem;">
+                    <li style="margin-bottom: 8px;">Xu, X. M. (1996). On estimating non-linear response of fungal development under fluctuating temperatures. <em>Plant Pathology, 45</em>(1), 163-171. <a href="https://doi.org/10.1111/j.1365-3059.1996.tb02903.x" target="_blank" style="color: var(--accent-cyan); text-decoration: none;">https://doi.org/10.1111/j.1365-3059.1996.tb02903.x</a></li>
+                    <li style="margin-bottom: 8px;">Xu, X. M. (1999). Effects of temperature on the length of the incubation period of apple powdery mildew (<em>Podosphaera leucotricha</em>). <em>Plant Pathology, 48</em>(4), 548-554. <a href="https://doi.org/10.1046/j.1365-3059.1999.00371.x" target="_blank" style="color: var(--accent-cyan); text-decoration: none;">https://doi.org/10.1046/j.1365-3059.1999.00371.x</a></li>
+                </ul>`
         },
         'monilinia': {
-            titlu: "Modelul Xu & Robinson (2000)",
-            descriere: "Analizează riscul de infecție pe baza umidității prelungite (>85%) și a temperaturilor de 20-25°C. Modelul integrează alertele de precipitații extreme sau vânt puternic ca factori de micro-leziuni (porți de intrare pentru patogen)."
+            titlu: "Modelul Risc Combinat (Xu & Robinson 2000; Holb & Scherm 2007)",
+            descriere: `
+                <strong>Principiu de funcționare:</strong><br>
+                Modelează apariția moniliozei demonstrând că patogenul necesită obligatoriu o micro-plagă de intrare pe fruct. Analiza suprapune existența condițiilor favorabile pentru ciupercă cu detectarea fenomenelor meteorologice capabile să genereze leziuni fizice.<br><br>
+                
+                <strong>Condiții și Praguri:</strong><br>
+                Dezvoltarea este optimă la temperaturi de 15–30°C și Umiditate Relativă ≥ 85% prelungită (>4 ore). Riscul trece în stadiu RIDICAT (Alertă) doar dacă modelul interceptează factori generatori de plăgi mecanice: precipitații intense (>2 mm/30 min) sau rafale severe de vânt.<br><br>
+                
+                <strong>Referințe Bibliografice:</strong><br>
+                <ul style="list-style-type: none; padding: 0; margin: 0; font-size: 0.9rem;">
+                    <li style="margin-bottom: 8px;">Xu, X. M., & Robinson, J. D. (2000). Epidemiology of brown rot (<em>Monilinia fructigena</em>) on apple: infection of fruits by conidia. <em>Plant Pathology, 49</em>(2), 201-206. <a href="https://doi.org/10.1046/j.1365-3059.2000.00437.x" target="_blank" style="color: var(--accent-cyan); text-decoration: none;">https://doi.org/10.1046/j.1365-3059.2000.00437.x</a></li>
+                    <li style="margin-bottom: 8px;">Holb, I. J., & Scherm, H. (2007). Temporal dynamics of brown rot in different apple management systems and importance of dropped fruit for disease epidemic. <em>Phytopathology, 97</em>(9), 1104-1111. <a href="https://doi.org/10.1094/PHYTO-97-9-1104" target="_blank" style="color: var(--accent-cyan); text-decoration: none;">https://doi.org/10.1094/PHYTO-97-9-1104</a></li>
+                </ul>`
         },
         'termic': {
-            titlu: "Praguri de Rezistență Fiziologică (T10 / T-PA)",
-            descriere: "Sistemul compară extremele termice înregistrate/prognozate cu toleranța specifică a fiecărei fenofaze. T10 reprezintă temperatura la care se înregistrează 10% mortalitate a mugurilor/florilor, iar T-PA reprezintă pragul de alertă pentru stres."
+            titlu: "Modelul Utah, GDD Estival & Praguri Dinamice de Rezistență",
+            descriere: `
+                <strong>Principiu de funcționare:</strong><br>
+                Cuantifică necesarul de frig (Chill Units - CU) pentru vernalizare; 
+                Evaluează rezistența la extreme termice folosind praguri dinamice, <strong>strict dependente de fenofaza curentă</strong> (calculată prin GDD baza 4.5°C); 
+                Monitorizează stresul termic estival prin acumulări GDD baza 10°C.<br><br>
+                
+                <strong>Praguri Fiziologice și Ecuații:</strong><br>
+                • <strong>T10 (Mortalitate):</strong> Pragul letal pentru 10% din muguri/flori (variază dinamic: de la -20.0°C în repaus, la -2.2°C la înflorire deplină).<br>
+                • <strong>T-PA (Prag Alertă):</strong> Limita stresului fiziologic la frig (de la -15.0°C iarna, la +2.0°C în creșterea fructului).<br>
+                • <strong>GDD Stres Estival:</strong> <code style="color: #a8c7fa; background: #080d14; padding: 2px 6px; border-radius: 4px;">GDD_zi = [(T_max + T_min) / 2] &minus; 10</code><br><br>
+                
+                <strong>Referințe Bibliografice:</strong><br>
+                <ul style="list-style-type: none; padding: 0; margin: 0; font-size: 0.9rem;">
+                    <li style="margin-bottom: 8px;">Richardson, E. A., Seeley, S. D., & Walker, D. R. (1974). A model for estimating the completion of rest for 'Redhaven' and 'Elberta' peach trees. <em>HortScience, 9</em>(4), 331-332.</li>
+                    <li style="margin-bottom: 8px;">Luedeling, E., & Brown, P. H. (2011). A global analysis of the comparability of winter chill models for fruit and nut trees. <em>International Journal of Biometeorology, 55</em>, 411-421. <a href="https://doi.org/10.1007/s00484-010-0352-y" target="_blank" style="color: var(--accent-cyan); text-decoration: none;">https://doi.org/10.1007/s00484-010-0352-y</a></li>
+                    <li style="margin-bottom: 8px;">Luedeling, E., Girvetz, E. H., Semenov, M. A., & Brown, P. H. (2011). Climate change affects winter chill for temperate fruit and nut trees. <em>PLOS ONE, 6</em>(5), e20155. <a href="https://doi.org/10.1371/journal.pone.0020155" target="_blank" style="color: var(--accent-cyan); text-decoration: none;">https://doi.org/10.1371/journal.pone.0020155</a></li>
+                </ul>`
         },
         'hidric': {
-            titlu: "Deficitul de Presiune a Vaporilor (VPD) și Bilanțul Solului",
-            descriere: "VPD (calculat pe baza T și RH) indică forța de evaporare a aerului. Este corelat cu ecuația bilanțului apei în sol pe 72h (Precipitații minus Evapotranspirația de referință ET₀) pentru a determina necesarul exact de irigare."
+            titlu: "Modelul Penman-Monteith (FAO-56) & CWSI Proxy",
+            descriere: `
+                <strong>Principiu de funcționare:</strong><br>
+                Măsoară deficitul de apă la nivelul ecosistemului pomicol utilizând ecuația de referință evapotranspirativă Penman-Monteith și un proxy conceptual pentru Crop Water Stress Index (CWSI). Corelează pierderea apei din sol cu Deficitul de Presiune a Vaporilor (VPD).<br><br>
+                
+                <strong>Ecuații:</strong><br>
+                Evapotranspirația (ET₀):<br>
+                <code style="color: #a8c7fa; background: #080d14; padding: 2px 6px; border-radius: 4px;">ET₀ = [0.408&Delta;&middot;(Rn &minus; G) + &gamma;&middot;(900/(T+273))&middot;u₂&middot;(es &minus; ea)] / [&Delta; + &gamma;&middot;(1 + 0.34&middot;u₂)]</code><br>
+                Conceptul CWSI (teoretic, Jackson et al., 1981):<br>
+                <code style="color: #a8c7fa; background: #080d14; padding: 2px 6px; border-radius: 4px;">CWSI = 1 &minus; (ETa / ETp) = (Tc &minus; Ta &minus; dTll) / (dTul &minus; dTll)</code><br><br>
+                
+                <strong>Referințe Bibliografice:</strong><br>
+                <ul style="list-style-type: none; padding: 0; margin: 0; font-size: 0.9rem;">
+                    <li style="margin-bottom: 8px;">Allen, R. G., Pereira, L. S., Raes, D., & Smith, M. (1998). <em>Crop evapotranspiration-Guidelines for computing crop water requirements-FAO Irrigation and drainage paper 56</em>. FAO, Rome.</li>
+                    <li style="margin-bottom: 8px;">Jackson, R. D., Idso, S. B., Reginato, R. J., & Pinter, P. J. (1981). Canopy temperature as a crop water stress indicator. <em>Water Resources Research, 17</em>(4), 1133-1138. <a href="https://doi.org/10.1029/WR017i004p01133" target="_blank" style="color: var(--accent-cyan); text-decoration: none;">https://doi.org/10.1029/WR017i004p01133</a></li>
+                    <li style="margin-bottom: 8px;">Wheeler, W. D., Black, B., & Bugbee, B. (2023). Assessing water stress in a high-density apple orchard using trunk circumference variation, sap flow index and stem water potential. <em>Frontiers in Plant Science, 14</em>, 1214429. <a href="https://doi.org/10.3389/fpls.2023.1214429" target="_blank" style="color: var(--accent-cyan); text-decoration: none;">https://doi.org/10.3389/fpls.2023.1214429</a></li>
+                </ul>`
         },
         'radiativ': {
-            titlu: "Stres Radiativ și Risc de Sunburn",
-            descriere: "Corelează radiația solară directă (>800 W/m²) cu temperaturile maxime (>30°C). În faza de creștere a fructului, aceste date avertizează asupra riscului de arsură solară și necesitatea plaselor de umbrire."
+            titlu: "Model Bilanț Energetic FST (Li et al., 2014)",
+            descriere: `
+                <strong>Principiu de funcționare:</strong><br>
+                Evaluează stresul fotooxidativ și posibilitatea apariției arsurii solare (sunburn necrosis) prin estimarea indirectă a temperaturii la suprafața fructului (FST). Utilizează un bilanț energetic al fluxurilor de căldură absorbită, convectată și radiată de epiderma mărului.<br><br>
+                
+                <strong>Ecuații și Praguri Agronomice:</strong><br>
+                Ecuația principală de bilanț energetic:<br>
+                <code style="color: #a8c7fa; background: #080d14; padding: 2px 6px; border-radius: 4px;">Q_abs = H + &lambda;E + Re + Q_cond</code><br>
+                Alertă agronomică: Declanșare când condițiile favorizează FST > 46°C. Proxy determinist implementat în sistem: Temperatură > 32°C <strong>plus</strong> Radiație > 700 W/m² <strong>plus</strong> Umiditate < 30% <strong>plus</strong> Viteza vântului < 1.5 m/s.<br><br>
+                
+                <strong>Referințe Bibliografice:</strong><br>
+                <ul style="list-style-type: none; padding: 0; margin: 0; font-size: 0.9rem;">
+                    <li style="margin-bottom: 8px;">Li, L., Shen, H., Yi, S., & Liu, H. (2014). Modeling apple surface temperature dynamics based on weather data. <em>Sensors, 14</em>(11), 20217-20234. <a href="https://doi.org/10.3390/s141120217" target="_blank" style="color: var(--accent-cyan); text-decoration: none;">https://doi.org/10.3390/s141120217</a></li>
+                    <li style="margin-bottom: 8px;">Racskó, J., & Schrader, L. E. (2012). Sunburn of apple fruit: historical background, recent advances and future perspectives. <em>Critical Reviews in Plant Sciences, 31</em>(6), 455-504. <a href="https://doi.org/10.1080/07352689.2012.696453" target="_blank" style="color: var(--accent-cyan); text-decoration: none;">https://doi.org/10.1080/07352689.2012.696453</a></li>
+                    <li style="margin-bottom: 8px;">Torres, C. A., Sepúlveda, G., & Kahlaoui, B. (2017). Phytohormone interaction modulating fruit responses to photooxidative and heat stress on apple (<em>Malus domestica</em> Borkh.). <em>Frontiers in Plant Science, 8</em>, 2129. <a href="https://doi.org/10.3389/fpls.2017.02129" target="_blank" style="color: var(--accent-cyan); text-decoration: none;">https://doi.org/10.3389/fpls.2017.02129</a></li>
+                </ul>`
         },
         'eolian': {
-            titlu: "Praguri Mecanice și Entomofile",
-            descriere: "Evaluează rafelele de vânt. Modelele variază în funcție de fenofază: vânt >5 m/s limitează zborul insectelor polenizatoare (risc critic în înflorire), iar vânt >15 m/s implică risc mecanic (scuturare/rupere)."
+            titlu: "Termenul Aerodinamic & Praguri de Stres Mecanic",
+            descriere: `
+                <strong>Principiu de funcționare:</strong><br>
+                Acțiunea vântului în platformă este monitorizată pe mai multe direcții: intensificarea transpirației, efectul convectiv de răcire a suprafeței fructelor și daunele mecanice produse structurii pomilor, corelate cu scala Beaufort.<br><br>
+                
+                <strong>Praguri Mecanice validate agronomic:</strong><br>
+                • Vânt < 3 m/s &rarr; Risc Neglijabil.<br>
+                • Vânt 3–5 m/s &rarr; Risc Moderat (afectează rozetele florale și limitează strict activitatea zborului entomofil, mai ales al albinelor).<br>
+                • Vânt 5–8 m/s &rarr; Risc Semnificativ (frecarea și scuturarea fructelor, risc de microplăgi).<br>
+                • Vânt > 8 m/s &rarr; Risc Sever (vătămare structurală la nivelul plantației).<br><br>
+                
+                <strong>Referințe Bibliografice:</strong><br>
+                <ul style="list-style-type: none; padding: 0; margin: 0; font-size: 0.9rem;">
+                    <li style="margin-bottom: 8px;">Allen, R. G., Pereira, L. S., Raes, D., & Smith, M. (1998). <em>Crop evapotranspiration-Guidelines for computing crop water requirements-FAO Irrigation and drainage paper 56</em>. FAO, Rome.</li>
+                    <li style="margin-bottom: 8px;">Brandle, J. R., Hodges, L., & Zhou, X. H. (2004). Windbreaks in North American agricultural systems. <em>Agroforestry Systems, 61</em>, 65-78. <a href="https://doi.org/10.1023/B:AGFO.0000028990.31801.96" target="_blank" style="color: var(--accent-cyan); text-decoration: none;">https://doi.org/10.1023/B:AGFO.0000028990.31801.96</a></li>
+                    <li style="margin-bottom: 8px;">Li, L., Shen, H., Yi, S., & Liu, H. (2014). Modeling apple surface temperature dynamics based on weather data. <em>Sensors, 14</em>(11), 20217-20234. <a href="https://doi.org/10.3390/s141120217" target="_blank" style="color: var(--accent-cyan); text-decoration: none;">https://doi.org/10.3390/s141120217</a></li>
+                </ul>`
+        },
+        'teren': {
+            titlu: "Nivel 4: Validare Teren & Registru Agrotehnic (Ground-Truth)",
+            descriere: `
+                <strong>Principiu de funcționare:</strong><br>
+                Acest modul reprezintă ancora sistemului în realitatea fizică. Modelele AI și ecuațiile deterministe sunt teoretice până la validarea lor prin observații <i>in situ</i>. Modulul de teren reprezintă o buclă de calibrare esențială, asigurând că raționamentele AI se sincronizează perfect cu starea reală a livezii.<br><br>
+                
+                <strong>Secțiunile Modulului:</strong><br>
+                • <strong>Memorie Vizuală:</strong> Validarea prezenței și impactului agenților patogeni/dăunătorilor pe anumite zone (foliaj, ramuri, trunchi, fructe, sol). Se realizează prin evaluări imagistice (fotografii obiective din teren). În final creeându-se o baza de date vizuala care este analizata de AI<br>
+                • <strong>Registrul Agrotehnic:</strong> Consolidarea memoriei instituționale a fermei (tratamente fitosanitare detaliate pe substanțe, doze, remanență; irigații și fertilizări). Acest istoric este analizat de AI pentru a ajusta riscurile și a nu recomanda un tratament proactiv dacă deja a fost aplicat.<br>
+                • <strong>Ortofotoplanuri:</strong> Evaluarea vigorii livezii (NDVI) folosind imagistica din dronă.<br><br>
+
+                <strong>Securitate și Trasabilitate:</strong><br>
+               Introducerea datelor pe server impune o filtrare strictă a datelor din punct de vedere al securității cibernetice, începând cu autentificarea strictă prin Google (OAuth), permisă doar specialiștilor autorizați din cadrul Fermei Didactice și de Cercetare Rusciori, continuând cu alte verificări în straturi pentru a evita tentativele de hacking sau flood.`
         }
     };
 
@@ -439,8 +554,12 @@
         
         if (modelData) {
             modelTitlu.textContent = modelData.titlu;
-            modelDescriere.textContent = modelData.descriere;
-            infoBox.style.display = 'block'; // Afișăm caseta
+            
+            // ATENȚIE: Aici am înlocuit .textContent cu .innerHTML
+            // pentru a permite interpretarea corectă a tag-urilor HTML (<br>, <strong>, <a>)
+            modelDescriere.innerHTML = modelData.descriere; 
+            
+            infoBox.style.display = 'block'; 
         } else {
             infoBox.style.display = 'none';
         }
